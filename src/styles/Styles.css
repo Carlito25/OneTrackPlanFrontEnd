@@ -1,0 +1,41 @@
+.content{
+   
+    padding: 50px 20px 20px 20px;
+}
+
+
+.ant-btn-primary {
+    background-color: #00C9B0;
+}
+.ant-btn:hover {
+     background-color: #217c72 !important; 
+}
+
+.table{
+    padding-top: 10px;
+}
+.ant-table{
+    background-color: #FFEDCB !important; 
+}
+.ant-table
+  .ant-table-container
+  .ant-table-content
+  table
+  thead.ant-table-thead
+  .ant-table-cell {
+  background-color: #FFEDCB;
+}
+
+.deleteButton{
+    background-color: #ff2600 !important; 
+}
+.deleteButton:hover{
+    background-color: #470d03 !important; 
+}
+
+.editButton{
+    background-color: #0688a8 !important; 
+}
+.editButton:hover{
+    background-color: #02485a !important; 
+}
