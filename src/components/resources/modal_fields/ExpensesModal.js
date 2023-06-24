@@ -5,10 +5,11 @@ function ExpensesModal({
 
     expensesFormData,
     setExpensesFormData,
+    modalTitle
 }) {
     return (
         <div>
-            <h1>Add Expenses</h1>
+            <h1>{modalTitle}</h1>
             <Form
                 layout='vertical'
             >

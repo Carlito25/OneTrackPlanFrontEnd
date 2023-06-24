@@ -4,9 +4,11 @@ import ModalComponents from '../resources/modal_fields/ModalComponents';
 import ExpensesModal from '../resources/modal_fields/ExpensesModal';
 import { useState, useEffect } from 'react';
 import { Layout, Space, Button, } from 'antd';
-import axios from "axios";
+import axios, { Axios } from "axios";
 import TableComponents from '../resources/TableComponents';
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
+import Swal from 'sweetalert2';
 
 const { Content } = Layout;
 
@@ -21,6 +23,7 @@ function Expenses() {
 
     const [isTableLoading, setIsTableLoading] = useState(true);
     const [expenses, setExpenses] = useState(null);
+    const [modalTitle, setModalTitle] = useState(null);
 
     const apiLink = "http://localhost:8000/api/expenses";
 
@@ -45,6 +48,44 @@ function Expenses() {
             expenses_id: "",
         });
         setIsModalOpen(true);
+    }
+
+    const updateExpenses = async (id) => {
+        axios
+            .get(apiLink + "/" + id)
+            .then(function (response) {
+                setExpensesFormData({
+                    ...expensesFormData,
+                    date: response.data.date,
+                    expenses: response.data.expenses,
+                    amount: response.data.amount,
+                    expenses_id: response.data.id,
+                })
+                setModalTitle("Update Expenses");
+                setIsModalOpen(true);
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+
+    }
+
+    const deleteExpenses = (id) => {
+        Swal.fire(DeleteSwalConfig)
+            .then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(apiLink + "/" + id)
+                        .then(() => {
+                            console.log(apiLink + "/" + id + " is Delete Success")
+                            setIsModalOpen(false);
+                            fetchExpenses();
+                        })
+                }
+            })
+            .catch((error) => {
+                console.error("Error deleting Expenses", error);
+            })
     }
 
     const onSubmit = () => {
@@ -93,22 +134,24 @@ function Expenses() {
             dataIndex: "id",
             width: "4%",
             key: "action",
-            render: () => (
-              <Space size='middle'>
-                <Button
-                  type="primary"
-                  icon={<EditFilled />}
-                  className='editButton'
-                ></Button>
-      
-                <Button
-                  type="primary"
-                  icon={<DeleteFilled />}
-                  className='deleteButton'
-                ></Button>
-              </Space>
+            render: (id) => (
+                <Space size='middle'>
+                    <Button
+                        type="primary"
+                        icon={<EditFilled />}
+                        className='editButton'
+                        onClick={() => updateExpenses(id)}
+                    ></Button>
+
+                    <Button
+                        type="primary"
+                        icon={<DeleteFilled />}
+                        className='deleteButton'
+                        onClick={() => deleteExpenses(id)}
+                    ></Button>
+                </Space>
             )
-          }
+        }
     ]
 
     return (
@@ -130,9 +173,10 @@ function Expenses() {
                         />
                         <ModalComponents
                             modalContent={
-                                <ExpensesModal 
-                                expensesFormData={expensesFormData}
-                                setExpensesFormData={setExpensesFormData}
+                                <ExpensesModal
+                                    expensesFormData={expensesFormData}
+                                    setExpensesFormData={setExpensesFormData}
+                                    modalTitle={modalTitle}
                                 />
                             }
                             isShownModal={isModalOpen}

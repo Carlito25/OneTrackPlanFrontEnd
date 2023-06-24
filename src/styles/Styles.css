@@ -39,3 +39,13 @@
 .editButton:hover{
     background-color: #02485a !important; 
 }
+
+/*Side bar Menu*/
+.sidebar-menu{
+    font-size: 18px;
+}
+
+.sidenav-menu-icons{
+    padding-right: 15px;
+}
+

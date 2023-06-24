@@ -5,10 +5,11 @@ import moment from 'moment';
 function IncomeModal({
     incomeFormData,
     setIncomeFormData,
+    modalTitle
 }) {
     return (
         <div>
-            <h1>Add Income</h1>
+            <h1>{modalTitle}</h1>
             <Form
                 layout='vertical'
             >
