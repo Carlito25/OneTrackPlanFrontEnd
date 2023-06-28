@@ -1,14 +1,15 @@
-import { Button, Layout, Menu, Row } from 'antd';
+import {  Layout, Menu, Row } from 'antd';
 import { Link } from "react-router-dom";
 import {
   ExportOutlined,
   ImportOutlined,
   ProfileOutlined,
   CalendarOutlined,
-  FieldTimeOutlined
+  FieldTimeOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 
-const { Header, Content, Footer, Sider } = Layout;
+const {Sider } = Layout;
 
 
 function getItem(label, key, icon, children) {
@@ -16,12 +17,12 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
+  getItem(<Link to="/dashboard">Dashboard</Link>, "item0", <DashboardOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/income">Income</Link>, "item0", <ImportOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/expenses">Expenses</Link>, "item1", <ExportOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/expenses">Content Planner</Link>, "item2", <CalendarOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
-  getItem(<Link to="/expenses">Task</Link>, "item3", <ProfileOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
+  getItem(<Link to="/task">Task</Link>, "item3", <ProfileOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/expenses">Time Management</Link>, "item4",<FieldTimeOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
-
 ];
 
 function Sidebar() {

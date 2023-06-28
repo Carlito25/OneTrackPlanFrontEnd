@@ -4,13 +4,15 @@ import ModalComponents from '../resources/modal_fields/ModalComponents';
 import IncomeModal from '../resources/modal_fields/IncomeModal';
 import { Layout, Button, Space } from 'antd';
 import { useEffect, useState } from 'react';
-import axios, { Axios } from "axios";
+import axios from "axios";
 import TableComponents from '../resources/TableComponents';
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
+import NotifSwalAlert from '../resources/swal/NotifSwalAler';
 
 const { Content } = Layout;
+const Toast = NotifSwalAlert();
 
 function Income() {
   const [incomeFormData, setIncomeFormData] = useState({
@@ -92,6 +94,11 @@ function Income() {
       .post(apiLink, incomeFormData)
       .then(function (response) {
         console.log(response);
+        Toast.fire({
+          icon: 'success',
+          title: response.data.status,
+          text: response.data.message,
+        });
         setIsModalOpen(false);
         setIsTableLoading(true);
         fetchIncome();
@@ -100,6 +107,7 @@ function Income() {
         console.log(error);
       })
   }
+  
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -126,6 +134,9 @@ function Income() {
       dataIndex: "amount",
       width: "32%",
       key: "amount",
+      render: (value) => `₱${value.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      })}`
     },
     {
       title: "",

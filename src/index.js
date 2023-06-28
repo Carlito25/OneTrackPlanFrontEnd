@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import Income from './components/user/Income';
 import Expenses from './components/user/Expenses';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Dashboard from './components/user/Dashboard';
+import Task from './components/user/Task';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: "/expenses",
     element: <Expenses />,
+  },
+  {
+    path: "/Dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/Task",
+    element: <Task />,
   }
 ]);
 

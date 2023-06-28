@@ -4,13 +4,15 @@ import ModalComponents from '../resources/modal_fields/ModalComponents';
 import ExpensesModal from '../resources/modal_fields/ExpensesModal';
 import { useState, useEffect } from 'react';
 import { Layout, Space, Button, } from 'antd';
-import axios, { Axios } from "axios";
+import axios  from "axios";
 import TableComponents from '../resources/TableComponents';
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
+import NotifSwalAlert from '../resources/swal/NotifSwalAler';
 
 const { Content } = Layout;
+const Toast = NotifSwalAlert();
 
 function Expenses() {
     const [expensesFormData, setExpensesFormData] = useState({
@@ -93,6 +95,11 @@ function Expenses() {
             .post(apiLink, expensesFormData)
             .then(function (response) {
                 console.log(response);
+                Toast.fire({
+                    icon:"success",
+                    title:response.data.status,
+                    text:response.data.message,
+                });
                 setIsModalOpen(false);
                 setIsTableLoading(true);
                 fetchExpenses();
@@ -128,6 +135,9 @@ function Expenses() {
             dataIndex: "amount",
             width: "33%",
             key: "amount",
+            render: (value) => `₱${value.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+              })}`
         },
         {
             title: "",

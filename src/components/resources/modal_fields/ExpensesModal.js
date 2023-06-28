@@ -1,19 +1,21 @@
-import { Input, Form, DatePicker } from 'antd';
+import { Input, Form, DatePicker, InputNumber } from 'antd';
 import moment from 'moment';
 
 function ExpensesModal({
-
     expensesFormData,
     setExpensesFormData,
     modalTitle
 }) {
+
     return (
         <div>
             <h1>{modalTitle}</h1>
             <Form
                 layout='vertical'
             >
-                <Form.Item label="Date">
+                <Form.Item
+                    label="Date"
+                >
                     <DatePicker
                         value={expensesFormData.date ? moment(expensesFormData.date) : null}
                         onChange={(date, dateString) =>
@@ -24,8 +26,11 @@ function ExpensesModal({
                         }
                     />
                 </Form.Item>
-                <Form.Item label="Expenses">
-                <Input
+                <Form.Item
+                    label="Expenses"
+
+                >
+                    <Input
                         placeholder="Electricty, Internet, Grocery, etc."
                         value={expensesFormData.expenses}
                         onChange={(event) =>
@@ -36,14 +41,18 @@ function ExpensesModal({
                         }
                     />
                 </Form.Item>
-                <Form.Item label="Amount">
-                <Input
+                <Form.Item
+                    label="Amount"
+                >
+                    <InputNumber
                         placeholder="Enter the amount"
+                        style={{ width: 150 }}
+                        formatter={(value) => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         value={expensesFormData.amount}
-                        onChange={(event) =>
+                        onChange={(number) =>
                             setExpensesFormData({
                                 ...expensesFormData,
-                                amount: event.target.value,
+                                amount: number,
                             })
                         }
                     />

@@ -1,5 +1,6 @@
-import { Input, Form, DatePicker } from 'antd';
+import { Input, Form, DatePicker, InputNumber } from 'antd';
 import moment from 'moment';
+
 
 
 function IncomeModal({
@@ -13,7 +14,9 @@ function IncomeModal({
             <Form
                 layout='vertical'
             >
-                <Form.Item label="Date">
+                <Form.Item
+                    label="Date"
+                >
                     <DatePicker
                         value={incomeFormData.date ? moment(incomeFormData.date) : null}
                         onChange={(date, dateString) =>
@@ -24,7 +27,9 @@ function IncomeModal({
                         }
                     />
                 </Form.Item>
-                <Form.Item label="Income">
+                <Form.Item
+                    label="Income"
+                >
                     <Input
                         placeholder="Projects, Work etc."
                         value={incomeFormData.income}
@@ -36,14 +41,17 @@ function IncomeModal({
                         }
                     />
                 </Form.Item>
-                <Form.Item label="Amount">
-                    <Input
+                <Form.Item
+                    label="Amount"
+                >
+                    <InputNumber
+                        formatter={(value) => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         placeholder="Enter the amount"
                         value={incomeFormData.amount}
-                        onChange={(event) =>
+                        onChange={(number) =>
                             setIncomeFormData({
                                 ...incomeFormData,
-                                amount: event.target.value,
+                                amount: number,
                             })
                         }
                     />

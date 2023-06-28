@@ -1,12 +1,12 @@
 
 import "../src/styles/Styles.css";
-import Income from './components/user/Income';
+import Dashboard from './components/user/Dashboard';
 
 
 function App() {
   return (
     <div>
-      <Income />
+      <Dashboard />
     </div>
   );
 }
