@@ -50,6 +50,7 @@ function Expenses() {
             expenses_id: "",
         });
         setIsModalOpen(true);
+        setModalTitle("Create Expenses");
     }
 
     const updateExpenses = async (id) => {

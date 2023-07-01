@@ -8,6 +8,7 @@ import Expenses from './components/user/Expenses';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from './components/user/Dashboard';
 import Task from './components/user/Task';
+import CompletedTask from './components/user/CompletedTask';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/Task",
     element: <Task />,
+  },
+  {
+    path: "/CompletedTask",
+    element: <CompletedTask />,
   }
 ]);
 

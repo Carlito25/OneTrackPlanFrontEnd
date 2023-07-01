@@ -1,6 +1,6 @@
 .content{
    
-    padding: 50px 20px 20px 20px;
+    padding: 10px 20px 20px 20px;
 }
 
 
@@ -49,9 +49,68 @@
     padding-right: 15px;
 }
 
+
+/* Task */
+
+.taskCard{
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin: 10px 0px 20px 0px;
+    
+}
+
+.taskCard .ant-card-body{
+    padding-top: 1px; 
+    padding-bottom: 5px; 
+    
+}
+.taskCard .ant-card-head{
+    margin-bottom: 1px; 
+}
+.taskTitle{
+    font-size: large;
+}
+
+
+.viewCompletedTaskButton:hover{
+    background-color: #00C9B0 !important; 
+    color: white !important;
+    
+    
+}
+
+.completeTaskButton:hover{
+    background-color: #083d23 !important; 
+}
+
+.cardContent{
+    padding-bottom: 7px; 
+}
+
+.taskDescription{
+    margin-bottom: 10px;
+}
+
+
+/* Dashboard */
+
+.welcomeHeading{
+    font-size: x-large;
+}
+
 .dashboardCard{
     width: 300px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin: 10px;
+}
+
+.dashboardTaskCard .ant-card-head{
+    /* margin-bottom: 1px;  */
+}
+
+.dashboardTaskCard .ant-card-body{
+    padding-top: 1px; 
+    padding-bottom: 25px; 
+    
 }
 

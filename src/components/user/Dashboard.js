@@ -1,19 +1,19 @@
-import { Card, Select, Layout, Row, Space, Typography } from "antd";
+import { Card, Select, Layout, Row, Space } from "antd";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
     ExportOutlined,
     ImportOutlined,
-    MoneyCollectOutlined
+    MoneyCollectOutlined,
+    ProfileOutlined,
 } from "@ant-design/icons";
 
 
 const { Content } = Layout;
-const { Text, Link } = Typography;
 // const { Meta } = Card;
 
 function Dashboard() {
@@ -30,9 +30,8 @@ function Dashboard() {
 
     const [selectedValue, setSelectedValue] = useState('Monthly');
 
-    const handleChange = (value) => {
-        setSelectedValue(value);
-    };
+    const [tasks, setTasks] = useState([]);
+
 
     const incomeTotalLink = 'http://localhost:8000/api/incomeMonthlyTotal/';
     const expensesMonthlyTotalLink = 'http://localhost:8000/api/expensesMonthlyTotal';
@@ -42,6 +41,30 @@ function Dashboard() {
 
     const expensesDailyTotalLink = 'http://localhost:8000/api/expensesDailyTotal';
     const incomeDailyTotalLink = 'http://localhost:8000/api/incomeDailyTotal';
+
+    const taskLink = "http://localhost:8000/api/task";
+
+    const handleChange = (value) => {
+        setSelectedValue(value);
+    };
+    const fetchTask = async () => {
+        // try {
+        //     const response = await axios.get(taskLink)
+        //     setLoading(false);
+        //     setTasks(response.data);
+        // } catch (error) {
+        //     console.log(error);
+        // }
+
+        axios
+            .get(taskLink)
+            .then(function (response) {
+                setLoading(false);
+                setTasks(response.data);
+            })
+
+
+    }
 
 
     const fetchIncomeTotal = () => {
@@ -81,7 +104,7 @@ function Dashboard() {
     }
 
     const fetchDailyIncomeTotal = () => {
-        axios
+     axios
             .get(incomeDailyTotalLink)
             .then(function (response) {
                 setLoading(false);
@@ -123,7 +146,7 @@ function Dashboard() {
 
 
 
-    const headStyle = (backgroundColor, textColor) => {
+    const cardColorStyle = (backgroundColor, textColor) => {
         return {
             background: backgroundColor,
             color: textColor,
@@ -150,6 +173,7 @@ function Dashboard() {
         fetchWeeklyIncomeTotal();
         fetchDailyIncomeTotal();
         fetchDailyExpensesTotal();
+        fetchTask();
     }, []);
 
     useEffect(() => {
@@ -163,7 +187,8 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1>Dashboard</h1>
+                        <h1 className='welcomeHeading'>Dashboard</h1>
+                        <h1 className='subHeading'>Finance</h1>
                         <Select
                             style={{ width: 160 }}
                             value={selectedValue}
@@ -187,9 +212,9 @@ function Dashboard() {
                                 className="dashboardCard"
                                 loading={loading}
                                 activeTabKey
-                                headStyle={headStyle('#1890ff', '#fff')}
+                                headStyle={cardColorStyle('#1890ff', '#fff')}
                                 actions={[
-                            
+
                                 ]}
                             >
                                 <p>
@@ -210,9 +235,9 @@ function Dashboard() {
                                 }
                                 className="dashboardCard"
                                 loading={loading}
-                                headStyle={headStyle('#CA3900', '#fff')}
+                                headStyle={cardColorStyle('#CA3900', '#fff')}
                                 actions={[
-                                    
+
                                 ]}
                             >
                                 <p>
@@ -233,13 +258,51 @@ function Dashboard() {
                                 }
                                 className="dashboardCard"
                                 loading={loading}
-                                headStyle={headStyle('green', '#fff')}
+                                headStyle={cardColorStyle('green', '#fff')}
                                 actions={[
-                                  
+
                                 ]}
                             >
                                 <p>{formattedSavingsTotal}</p>
 
+                            </Card>
+                        </Row>
+
+                        <h1 className='subHeading'>Task</h1>
+                        <Row gutter={16}>
+                            <Card
+                                hoverable
+                                title={
+                                    <Space>
+                                        <ProfileOutlined />
+                                        Your Tasks
+                                    </Space>
+                                }
+                                className="dashboardTaskCard"
+                                loading={loading}
+                                activeTabKey
+                                bodyStyle={cardColorStyle('#1890ff', '#fff')}
+                                headStyle={cardColorStyle('#1890ff', '#fff')}
+                                actions={[
+
+                                ]}
+                            >
+
+                                {tasks.length > 0 ? (
+                                    tasks.slice(0, 3).map(task => (
+                                        <p key={task.id}>
+                                            • {task.taskInfo}
+                                        </p>
+                                    ))
+                                ) : (
+                                    <p>You do not have any tasks.</p>
+                                )}
+
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <Link to={"/task"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
+                                        View More Tasks
+                                    </Link>
+                                </div>
                             </Card>
                         </Row>
                     </Content>

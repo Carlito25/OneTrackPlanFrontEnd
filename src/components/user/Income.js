@@ -50,6 +50,7 @@ function Income() {
       amount: "",
       income_id: "",
     });
+    setModalTitle("Create Income");
     setIsModalOpen(true);
   }
 

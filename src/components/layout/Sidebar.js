@@ -22,7 +22,7 @@ const items = [
   getItem(<Link to="/expenses">Expenses</Link>, "item1", <ExportOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/expenses">Content Planner</Link>, "item2", <CalendarOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
   getItem(<Link to="/task">Task</Link>, "item3", <ProfileOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
-  getItem(<Link to="/expenses">Time Management</Link>, "item4",<FieldTimeOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),
+  getItem(<Link to="/expenses">Time Management</Link>, "item4",<FieldTimeOutlined className="sidenav-menu-icons" style={{ fontSize: '20px'}}/>),  
 ];
 
 function Sidebar() {
