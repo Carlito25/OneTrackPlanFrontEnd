@@ -1,5 +1,6 @@
 import Sidebar from '../layout/Sidebar';
 import Navbar from '../layout/Navbar';
+import Footernav from '../layout/Footer';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import IncomeModal from '../resources/modal_fields/IncomeModal';
 import { Layout, Button, Space } from 'antd';
@@ -10,6 +11,7 @@ import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
 import NotifSwalAlert from '../resources/swal/NotifSwalAler';
+import React from 'react'
 
 const { Content } = Layout;
 const Toast = NotifSwalAlert();
@@ -140,7 +142,7 @@ function Income() {
       })}`
     },
     {
-      title: "",
+      title: "Actions",
       dataIndex: "id",
       width: "4%",
       key: "action",
@@ -164,6 +166,7 @@ function Income() {
     }
   ]
 
+
   return (
     <div>
       <Layout style={{ minHeight: '100vh' }}>
@@ -171,15 +174,15 @@ function Income() {
         <Layout>
           <Navbar />
           <Content className='content'>
-            <h1>Income</h1>
-            <Button type="primary" onClick={createIncome}>
+            <Button type="primary" onClick={createIncome} style={{ marginBottom:'10px' }}>
               Add Income
             </Button>
             <TableComponents
               loading={isTableLoading}
               columns={columns}
               dataSource={incomes}
-              className="table"
+              className="financetable"  
+
             />
             <ModalComponents
               modalContent={
@@ -195,6 +198,7 @@ function Income() {
               okText={"Submit"}
             />
           </Content>
+        <Footernav />
         </Layout>
       </Layout>
     </div>

@@ -11,6 +11,7 @@ import NotifSwalAlert from '../resources/swal/NotifSwalAler';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import TaskModal from '../resources/modal_fields/TaskModal';
 import { Link } from "react-router-dom";
+import Footernav from '../layout/Footer';
 
 
 
@@ -123,7 +124,6 @@ function Task() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1>Task</h1>
                         <Row>
                             <Col span={12}>
                                 <Button type="primary" onClick={createTask}>
@@ -166,10 +166,10 @@ function Task() {
                                 <Row className='cardContent'>
                                     <Col span={12}>
                                         <Col className='taskDescription'>
-                                            <Text>{task.taskDescription}</Text>
+                                            <Text style={{ color:'white'}}>{task.taskDescription}</Text>
                                         </Col>
                                         <Col>
-                                            <Text type="warning">Due Date: {task.date}</Text>
+                                            <Text style={{ color:'#F9F871'}}>Due Date: {task.date}</Text>
                                         </Col>
                                     </Col>
                                     <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -206,6 +206,7 @@ function Task() {
                             okText={"Submit"}
                         />
                     </Content>
+                    <Footernav />
                 </Layout>
             </Layout>
         </div>

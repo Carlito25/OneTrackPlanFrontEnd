@@ -10,7 +10,9 @@ import {
     ImportOutlined,
     MoneyCollectOutlined,
     ProfileOutlined,
+    CaretDownOutlined,
 } from "@ant-design/icons";
+import Footernav from "../layout/Footer";
 
 
 const { Content } = Layout;
@@ -104,7 +106,7 @@ function Dashboard() {
     }
 
     const fetchDailyIncomeTotal = () => {
-     axios
+        axios
             .get(incomeDailyTotalLink)
             .then(function (response) {
                 setLoading(false);
@@ -180,6 +182,7 @@ function Dashboard() {
         getSavingsTotal();
     }, [incomeTotal, expensesTotal, selectedValue])
 
+    const CustomArrowIcon = () => <CaretDownOutlined style={{ color: 'white' }} />;
     return (
         <div>
             <Layout style={{ minHeight: '100vh' }}>
@@ -187,9 +190,10 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1 className='welcomeHeading'>Dashboard</h1>
                         <h1 className='subHeading'>Finance</h1>
                         <Select
+                            suffixIcon={<CustomArrowIcon />}
+                            className="financeSelect"
                             style={{ width: 160 }}
                             value={selectedValue}
                             onChange={handleChange}
@@ -212,12 +216,11 @@ function Dashboard() {
                                 className="dashboardCard"
                                 loading={loading}
                                 activeTabKey
-                                headStyle={cardColorStyle('#1890ff', '#fff')}
-                                actions={[
-
-                                ]}
+                                headStyle={cardColorStyle('#615460', 'white')}
+                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                bordered={false} style={{ width: 300 }}
                             >
-                                <p>
+                                <p className="financeNumbers">
                                     {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
                                     {selectedValue === 'Monthly' && formattedIncomeTotal}
                                     {selectedValue === 'Daily' && formattedIncomeDailyTotal}
@@ -235,12 +238,11 @@ function Dashboard() {
                                 }
                                 className="dashboardCard"
                                 loading={loading}
-                                headStyle={cardColorStyle('#CA3900', '#fff')}
-                                actions={[
-
-                                ]}
+                                headStyle={cardColorStyle('#615460', 'white')}
+                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                bordered={false} style={{ width: 300 }}
                             >
-                                <p>
+                                <p className="financeNumbers">
                                     {selectedValue === 'Weekly' && formattedExpensesWeeklyTotal}
                                     {selectedValue === 'Monthly' && formattedExpensesTotal}
                                     {selectedValue === 'Daily' && formattedExpensesDailyTotal}
@@ -258,13 +260,11 @@ function Dashboard() {
                                 }
                                 className="dashboardCard"
                                 loading={loading}
-                                headStyle={cardColorStyle('green', '#fff')}
-                                actions={[
-
-                                ]}
+                                headStyle={cardColorStyle('#615460', 'white')}
+                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                bordered={false} style={{ width: 300 }}
                             >
-                                <p>{formattedSavingsTotal}</p>
-
+                                <p className="financeNumbers">{formattedSavingsTotal}</p>
                             </Card>
                         </Row>
 
@@ -281,22 +281,23 @@ function Dashboard() {
                                 className="dashboardTaskCard"
                                 loading={loading}
                                 activeTabKey
-                                bodyStyle={cardColorStyle('#1890ff', '#fff')}
-                                headStyle={cardColorStyle('#1890ff', '#fff')}
-                                actions={[
-
-                                ]}
+                                bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                headStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                bordered={false}
+                                style={{ width: 300 }}
                             >
 
                                 {tasks.length > 0 ? (
                                     tasks.slice(0, 3).map(task => (
                                         <p key={task.id}>
-                                            • {task.taskInfo}
+                                            • {task.taskInfo.split(' ').slice(0, 10).join(' ')}
+                                            {task.taskInfo.split(' ').length > 10 ? '...' : ''}
                                         </p>
                                     ))
                                 ) : (
                                     <p>You do not have any tasks.</p>
                                 )}
+
 
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Link to={"/task"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
@@ -306,6 +307,7 @@ function Dashboard() {
                             </Card>
                         </Row>
                     </Content>
+                    <Footernav />
                 </Layout>
             </Layout>
         </div>

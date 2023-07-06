@@ -78,7 +78,7 @@ function CompletedTask() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1>Completed Task</h1>
+                        <h1 className='subHeading'>Completed Task</h1>
                         <Row>
                             <Col span={12}>
                                 <Button type="primary" danger className='deleteButton'>

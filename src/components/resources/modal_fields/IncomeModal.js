@@ -1,4 +1,4 @@
-import { Input, Form, DatePicker, InputNumber } from 'antd';
+import { Input, Form, DatePicker, InputNumber, Row } from 'antd';
 import moment from 'moment';
 
 
@@ -9,8 +9,9 @@ function IncomeModal({
     modalTitle
 }) {
     return (
-        <div>
+       <>
             <h1>{modalTitle}</h1>
+            <Row>
             <Form
                 layout='vertical'
             >
@@ -46,6 +47,7 @@ function IncomeModal({
                 >
                     <InputNumber
                         formatter={(value) => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        style={{ width: 150 }}
                         placeholder="Enter the amount"
                         value={incomeFormData.amount}
                         onChange={(number) =>
@@ -57,7 +59,9 @@ function IncomeModal({
                     />
                 </Form.Item>
             </Form>
-        </div>
+            </Row>
+       </>
+   
     );
 }
 

@@ -1,30 +1,51 @@
+
+
 .content{
-   
+  
+    background-color: #50424F;
+    
     padding: 10px 20px 20px 20px;
 }
 
 
 .ant-btn-primary {
-    background-color: #00C9B0;
+    background-color: #00B3B4;
 }
 .ant-btn:hover {
      background-color: #217c72 !important; 
 }
 
-.table{
-    padding-top: 10px;
-}
+
 .ant-table{
-    background-color: #FFEDCB !important; 
-}
-.ant-table
-  .ant-table-container
-  .ant-table-content
-  table
-  thead.ant-table-thead
-  .ant-table-cell {
-  background-color: #FFEDCB;
-}
+    background-color: #50424F !important; 
+} 
+
+  .ant-table tbody > tr > td {
+    color: white;
+  }  
+
+  .ant-table tbody > tr:hover > td {
+    background-color: #615460 !important; 
+    color: white !important;
+  }
+
+  .ant-table-thead > tr > th {
+    background-color: #615460 !important; 
+    color: white !important;
+  }  
+
+  .ant-pagination-item-link {
+    color: white !important;
+  }
+  
+  .custom-pagination-icon svg path {
+    fill: white !important;
+  }
+  
+  .custom-pagination-active {
+    color: black !important;
+  }
+
 
 .deleteButton{
     background-color: #ff2600 !important; 
@@ -56,7 +77,8 @@
     width: 100%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin: 10px 0px 20px 0px;
-    
+    background-color: #615460 !important; 
+    border: none;
 }
 
 .taskCard .ant-card-body{
@@ -66,17 +88,23 @@
 }
 .taskCard .ant-card-head{
     margin-bottom: 1px; 
+
+    border: none;
 }
 .taskTitle{
     font-size: large;
+    color: white;
 }
 
 
 .viewCompletedTaskButton:hover{
     background-color: #00C9B0 !important; 
-    color: white !important;
-    
-    
+    color: white !important;  
+}
+
+.viewCompletedTaskButton{
+    border: solid #00B3B4 !important;
+    color: #00B3B4 !important;
 }
 
 .completeTaskButton:hover{
@@ -85,10 +113,12 @@
 
 .cardContent{
     padding-bottom: 7px; 
+    
 }
 
 .taskDescription{
     margin-bottom: 10px;
+    color: white !important;
 }
 
 
@@ -96,21 +126,81 @@
 
 .welcomeHeading{
     font-size: x-large;
+    color: white;
 }
 
-.dashboardCard{
-    width: 300px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    margin: 10px;
+.subHeading{
+    color: white;
 }
 
-.dashboardTaskCard .ant-card-head{
-    /* margin-bottom: 1px;  */
-}
+
 
 .dashboardTaskCard .ant-card-body{
     padding-top: 1px; 
     padding-bottom: 25px; 
     
+}
+
+.financeSelect .ant-select-selector{
+    background-color: #00B3B4 !important;
+    color: white;
+    border: none !important;
+}
+
+.financeSelect .ant-select-selector .ant-select-arrow {
+    color: white !important;
+  }
+
+/*Finance*/
+
+.dashboardCard{
+    margin: 5px;
+    margin-top: 10px;   
+}
+
+.dashboardCard .ant-card-body{
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+}
+
+.dashboardCard .ant-card-head{
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+}
+
+
+
+.financeNumbers{
+    padding-top: 1px; 
+    padding-bottom: 1px; 
+    color: white;
+    font-size: 30px;
+}
+
+/* Modal */
+
+div.ant-modal-content {
+    background-color: #50424F !important;
+    color: white;
+}
+
+label{
+    color: white !important;
+}
+
+.ant-modal-close {
+    color: white !important;
+}
+
+/* SideBar */
+
+.ant-menu-item:hover{
+    background-color: #CC6DCA !important;
+    color: white !important;
+}
+
+.ant-menu-item-selected{
+    background-color: #CC6DCA !important;
+    color: white !important;
 }
 

@@ -10,6 +10,8 @@ import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
 import NotifSwalAlert from '../resources/swal/NotifSwalAler';
+import { Footer } from 'antd/es/layout/layout';
+import Footernav from '../layout/Footer';
 
 const { Content } = Layout;
 const Toast = NotifSwalAlert();
@@ -141,7 +143,7 @@ function Expenses() {
               })}`
         },
         {
-            title: "",
+            title: "Actions",
             dataIndex: "id",
             width: "4%",
             key: "action",
@@ -172,15 +174,14 @@ function Expenses() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1>Expenses</h1>
-                        <Button type="primary" onClick={createExpenses}>
+                        <Button type="primary" onClick={createExpenses} style={{ marginBottom:'10px' }}>
                             Add Expenses
                         </Button>
                         <TableComponents
                             loading={isTableLoading}
                             columns={columns}
                             dataSource={expenses}
-                            className="table"
+                            className="financetable"
                         />
                         <ModalComponents
                             modalContent={
@@ -196,6 +197,7 @@ function Expenses() {
                             okText={"Submit"}
                         />
                     </Content>
+                    <Footernav />
                 </Layout>
             </Layout>
         </div>

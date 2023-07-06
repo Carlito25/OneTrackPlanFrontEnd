@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from './components/user/Dashboard';
 import Task from './components/user/Task';
 import CompletedTask from './components/user/CompletedTask';
+import ContentPlanner from './components/user/ContentPlanner';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/CompletedTask",
     element: <CompletedTask />,
+  },
+  {
+    path: "/ContentPlanner",
+    element: <ContentPlanner />,
   }
 ]);
 
