@@ -3,8 +3,8 @@ import Navbar from '../layout/Navbar';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import ExpensesModal from '../resources/modal_fields/ExpensesModal';
 import { useState, useEffect } from 'react';
-import { Layout, Space, Button, } from 'antd';
-import axios  from "axios";
+import { Layout, Space, Button, Row, Col, Input } from 'antd';
+import axios from "axios";
 import TableComponents from '../resources/TableComponents';
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
@@ -24,7 +24,7 @@ function Expenses() {
         expenses_id: "",
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [searchedText, setSearchedText] = useState("");
     const [isTableLoading, setIsTableLoading] = useState(true);
     const [expenses, setExpenses] = useState(null);
     const [modalTitle, setModalTitle] = useState(null);
@@ -69,7 +69,7 @@ function Expenses() {
                 setModalTitle("Update Expenses");
                 setIsModalOpen(true);
             })
-            .catch(function(error){
+            .catch(function (error) {
                 console.log(error);
             })
 
@@ -99,9 +99,9 @@ function Expenses() {
             .then(function (response) {
                 console.log(response);
                 Toast.fire({
-                    icon:"success",
-                    title:response.data.status,
-                    text:response.data.message,
+                    icon: "success",
+                    title: response.data.status,
+                    text: response.data.message,
                 });
                 setIsModalOpen(false);
                 setIsTableLoading(true);
@@ -126,12 +126,22 @@ function Expenses() {
             dataIndex: "date",
             width: "33%",
             key: "date",
+            sorter: (a, b) => a.date.localeCompare(b.date),
+            filteredValue: [searchedText],
+            onFilter: (value, record) => {
+                return (
+                    String(record.date).toLowerCase().includes(value.toLowerCase()) ||
+                    String(record.expenses).toLowerCase().includes(value.toLowerCase()) ||
+                    String(record.amount).toLowerCase().includes(value.toLowerCase())
+                );
+            },
         },
         {
             title: "Expenses",
             dataIndex: "expenses",
             width: "33%",
             key: "expenses",
+            sorter: (a, b) => a.date.localeCompare(b.date),
         },
         {
             title: "Amount",
@@ -140,7 +150,8 @@ function Expenses() {
             key: "amount",
             render: (value) => `₱${value.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
-              })}`
+            })}`,
+            sorter: (a, b) => a.amount - b.amount,
         },
         {
             title: "Actions",
@@ -174,9 +185,24 @@ function Expenses() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <Button type="primary" onClick={createExpenses} style={{ marginBottom:'10px' }}>
-                            Add Expenses
-                        </Button>
+                        <Row justify="space-between">
+                            <Col span={18}>
+                                <Button type="primary" onClick={createExpenses} style={{ marginBottom: '10px' }}>
+                                    Add Expenses
+                                </Button>
+                            </Col>
+                            <Col span={6} align="end">
+                                <Input.Search
+                                    placeholder="Search"
+                                    onSearch={(value) => {
+                                        setSearchedText(value);
+                                    }}
+                                    onChange={(e) => {
+                                        setSearchedText(e.target.value);
+                                    }}
+                                />
+                            </Col>
+                        </Row>
                         <TableComponents
                             loading={isTableLoading}
                             columns={columns}
