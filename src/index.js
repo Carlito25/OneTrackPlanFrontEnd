@@ -11,6 +11,9 @@ import Task from './components/user/Task';
 import CompletedTask from './components/user/CompletedTask';
 import ContentPlanner from './components/user/ContentPlanner';
 
+import Login from './components/user/Login';
+import Registration from './components/user/Registration';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +42,14 @@ const router = createBrowserRouter([
   {
     path: "/ContentPlanner",
     element: <ContentPlanner />,
+  },
+  {
+    path: "/Login",
+    element: <Login />,
+  },
+  {
+    path: "/Registration",
+    element: <Registration />,
   }
 ]);
 
