@@ -1,4 +1,4 @@
-import { Card, Select, Layout, Row, Space } from "antd";
+import { Card, Select, Layout, Row, Space, Col, Calendar, theme } from "antd";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
 import axios from "axios";
@@ -11,6 +11,7 @@ import {
     MoneyCollectOutlined,
     ProfileOutlined,
     CaretDownOutlined,
+    CalendarOutlined,
 } from "@ant-design/icons";
 import Footernav from "../layout/Footer";
 
@@ -34,6 +35,9 @@ function Dashboard() {
 
     const [tasks, setTasks] = useState([]);
 
+    const [draftContent, setDraftContent] = useState(0);
+    const [scheduledContent, setScheduledContent] = useState(0);
+
 
     const incomeTotalLink = 'http://localhost:8000/api/incomeMonthlyTotal/';
     const expensesMonthlyTotalLink = 'http://localhost:8000/api/expensesMonthlyTotal';
@@ -46,27 +50,46 @@ function Dashboard() {
 
     const taskLink = "http://localhost:8000/api/task";
 
+    const draftContentLink = "http://localhost:8000/api/contentDraft";
+    const scheduledContentLink = "http://localhost:8000/api/contentScheduled";
+
+
+
+
+    const onPanelChange = (value) => {
+        console.log(value.format('YYYY-MM-DD'));
+    };
+
     const handleChange = (value) => {
         setSelectedValue(value);
     };
     const fetchTask = async () => {
-        // try {
-        //     const response = await axios.get(taskLink)
-        //     setLoading(false);
-        //     setTasks(response.data);
-        // } catch (error) {
-        //     console.log(error);
-        // }
-
         axios
             .get(taskLink)
             .then(function (response) {
                 setLoading(false);
                 setTasks(response.data);
             })
-
-
     }
+
+    const fetchDraftContent = async () => {
+        axios
+            .get(draftContentLink)
+            .then(function (response) {
+                setLoading(false);
+                setDraftContent(response.data);
+            })
+    }
+
+    const fetchScheduledContent = async () => {
+        axios
+            .get(scheduledContentLink)
+            .then(function (response) {
+                setLoading(false);
+                setScheduledContent(response.data);
+            })
+    }
+
 
 
     const fetchIncomeTotal = () => {
@@ -123,10 +146,6 @@ function Dashboard() {
             })
     }
 
-
-
-
-
     const formatCurrency = (value) => {
         return value.toLocaleString('en-PH', {
             style: 'currency',
@@ -176,6 +195,8 @@ function Dashboard() {
         fetchDailyIncomeTotal();
         fetchDailyExpensesTotal();
         fetchTask();
+        fetchDraftContent();
+        fetchScheduledContent();
     }, []);
 
     useEffect(() => {
@@ -190,122 +211,191 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                        <h1 className='subHeading'>Finance</h1>
-                        <Select
-                            suffixIcon={<CustomArrowIcon />}
-                            className="financeSelect"
-                            style={{ width: 160 }}
-                            value={selectedValue}
-                            onChange={handleChange}
-                            options={[
-                                { value: 'Weekly', label: 'Previous 7 days' },
-                                { value: 'Monthly', label: 'Previous 30 days' },
-                                { value: 'Daily', label: 'Today' },
-                            ]
-                            }
-                        />
-                        <Row gutter={16}>
-                            <Card
-                                hoverable
-                                title={
-                                    <Space>
-                                        <ImportOutlined />
-                                        Your Income
-                                    </Space>
-                                }
-                                className="dashboardCard"
-                                loading={loading}
-                                activeTabKey
-                                headStyle={cardColorStyle('#615460', 'white')}
-                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
-                                bordered={false} style={{ width: 300 }}
-                            >
-                                <p className="financeNumbers">
-                                    {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
-                                    {selectedValue === 'Monthly' && formattedIncomeTotal}
-                                    {selectedValue === 'Daily' && formattedIncomeDailyTotal}
-                                </p>
-
-
-                            </Card>
-                            <Card
-                                hoverable
-                                title={
-                                    <Space>
-                                        <ExportOutlined />
-                                        Your Expenses
-                                    </Space>
-                                }
-                                className="dashboardCard"
-                                loading={loading}
-                                headStyle={cardColorStyle('#615460', 'white')}
-                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
-                                bordered={false} style={{ width: 300 }}
-                            >
-                                <p className="financeNumbers">
-                                    {selectedValue === 'Weekly' && formattedExpensesWeeklyTotal}
-                                    {selectedValue === 'Monthly' && formattedExpensesTotal}
-                                    {selectedValue === 'Daily' && formattedExpensesDailyTotal}
-                                </p>
-
-                            </Card>
-
-                            <Card
-                                hoverable
-                                title={
-                                    <Space>
-                                        <MoneyCollectOutlined />
-                                        Your Savings
-                                    </Space>
-                                }
-                                className="dashboardCard"
-                                loading={loading}
-                                headStyle={cardColorStyle('#615460', 'white')}
-                                bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
-                                bordered={false} style={{ width: 300 }}
-                            >
-                                <p className="financeNumbers">{formattedSavingsTotal}</p>
-                            </Card>
-                        </Row>
-
-                        <h1 className='subHeading'>Task</h1>
-                        <Row gutter={16}>
-                            <Card
-                                hoverable
-                                title={
-                                    <Space>
-                                        <ProfileOutlined />
-                                        Your Tasks
-                                    </Space>
-                                }
-                                className="dashboardTaskCard"
-                                loading={loading}
-                                activeTabKey
-                                bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
-                                headStyle={cardColorStyle('#CC6DCA', '#fff')}
-                                bordered={false}
-                                style={{ width: 300 }}
-                            >
-
-                                {tasks.length > 0 ? (
-                                    tasks.slice(0, 3).map(task => (
-                                        <p key={task.id}>
-                                            • {task.taskInfo.split(' ').slice(0, 10).join(' ')}
-                                            {task.taskInfo.split(' ').length > 10 ? '...' : ''}
+                        <Row>
+                            <Col span={18}>
+                                <h1 className='subHeading'>Finance</h1>
+                                <Select
+                                    suffixIcon={<CustomArrowIcon />}
+                                    className="financeSelect"
+                                    style={{ width: 160 }}
+                                    value={selectedValue}
+                                    onChange={handleChange}
+                                    options={[
+                                        { value: 'Weekly', label: 'Previous 7 days' },
+                                        { value: 'Monthly', label: 'Previous 30 days' },
+                                        { value: 'Daily', label: 'Today' },
+                                    ]
+                                    }
+                                />
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Card
+                                        hoverable
+                                        title={
+                                            <Space>
+                                                <ImportOutlined />
+                                                Your Income
+                                            </Space>
+                                        }
+                                        className="dashboardCard"
+                                        loading={loading}
+                                        activeTabKey
+                                        headStyle={cardColorStyle('#615460', 'white')}
+                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        bordered={false}
+                                    >
+                                        <p className="financeNumbers">
+                                            {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
+                                            {selectedValue === 'Monthly' && formattedIncomeTotal}
+                                            {selectedValue === 'Daily' && formattedIncomeDailyTotal}
                                         </p>
-                                    ))
-                                ) : (
-                                    <p>You do not have any tasks.</p>
-                                )}
 
 
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Link to={"/task"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
-                                        View More Tasks
-                                    </Link>
+                                    </Card>
+                                    <Card
+                                        hoverable
+                                        title={
+                                            <Space>
+                                                <ExportOutlined />
+                                                Your Expenses
+                                            </Space>
+                                        }
+                                        className="dashboardCard"
+                                        loading={loading}
+                                        headStyle={cardColorStyle('#615460', 'white')}
+                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        bordered={false}
+                                    >
+                                        <p className="financeNumbers">
+                                            {selectedValue === 'Weekly' && formattedExpensesWeeklyTotal}
+                                            {selectedValue === 'Monthly' && formattedExpensesTotal}
+                                            {selectedValue === 'Daily' && formattedExpensesDailyTotal}
+                                        </p>
+
+                                    </Card>
+
+                                    <Card
+                                        hoverable
+                                        title={
+                                            <Space>
+                                                <MoneyCollectOutlined />
+                                                Your Savings
+                                            </Space>
+                                        }
+                                        className="dashboardCard"
+                                        loading={loading}
+                                        headStyle={cardColorStyle('#615460', 'white')}
+                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        bordered={false}
+                                    >
+                                        <p className="financeNumbers">{formattedSavingsTotal}</p>
+                                    </Card>
                                 </div>
-                            </Card>
+
+
+                                <h1 className='subHeading'>Task</h1>
+                                <Row gutter={16}>
+                                    <Col>
+                                        <Card
+                                            hoverable
+                                            title={
+                                                <Space>
+                                                    <ProfileOutlined />
+                                                    Your Tasks
+                                                </Space>
+                                            }
+                                            className="dashboardTaskCard"
+                                            loading={loading}
+                                            activeTabKey
+                                            bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                            headStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                            bordered={false}
+                                            style={{ width: 300 }}
+                                        >
+
+                                            {tasks.length > 0 ? (
+                                                tasks.slice(0, 3).map(task => (
+                                                    <p key={task.id}>
+                                                        • {task.taskInfo.split(' ').slice(0, 10).join(' ')}
+                                                        {task.taskInfo.split(' ').length > 10 ? '...' : ''}
+                                                    </p>
+                                                ))
+                                            ) : (
+                                                <p>You do not have any tasks.</p>
+                                            )}
+
+
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <Link to={"/task"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
+                                                    View More Tasks
+                                                </Link>
+                                            </div>
+                                        </Card>
+                                    </Col>
+                                    <Col>
+                                        <Card
+                                            hoverable
+                                            title={
+                                                <Space>
+                                                    <CalendarOutlined />
+                                                    Content
+                                                </Space>
+                                            }
+                                            className="dashboardTaskCard"
+                                            // loading={loading}
+                                            activeTabKey
+                                            bodyStyle={cardColorStyle('#615460', '#fff')}
+                                            headStyle={cardColorStyle('#615460', '#fff')}
+                                            bordered={false}
+                                            style={{ width: 300 }}
+                                        >
+                                            <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <Card
+                                                    loading={loading}
+                                                    style={{ width: 100, }}
+                                                    bodyStyle={cardColorStyle('#fadb14', 'black')}
+                                                    bordered={false}
+                                                    className="contentInnerCards"
+
+                                                >
+                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
+                                                    <p
+                                                        style={{ display: 'flex', justifyContent: 'center' }}
+                                                        className="contentNumbers"
+                                                    >{draftContent}</p>
+                                                </Card>
+
+                                                <Card
+                                                    loading={loading}
+                                                    className="contentInnerCards"
+                                                    style={{ width: 100, }}
+                                                    bodyStyle={cardColorStyle('#1890ff', '#fff')}
+                                                    bordered={false}
+                                                >
+                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
+                                                    <p
+                                                        style={{ display: 'flex', justifyContent: 'center', }}
+                                                        className="contentNumbers"
+                                                    >{scheduledContent}</p>
+                                                </Card>
+
+                                            </Row>
+
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={6} style={{ marginTop: 0, padding: 20 }}>
+                                <div>
+                                    <Calendar
+                                        fullscreen={false}
+                                        onPanelChange={onPanelChange}
+                                        className="dashboardCalendar"
+
+                                    />
+                                </div>
+                            </Col>
                         </Row>
+
                     </Content>
                     <Footernav />
                 </Layout>

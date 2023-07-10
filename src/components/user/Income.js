@@ -3,7 +3,7 @@ import Navbar from '../layout/Navbar';
 import Footernav from '../layout/Footer';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import IncomeModal from '../resources/modal_fields/IncomeModal';
-import { Layout, Button, Space } from 'antd';
+import { Layout, Button, Space, Row, Col, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import TableComponents from '../resources/TableComponents';
@@ -23,6 +23,7 @@ function Income() {
     amount: "",
     income_id: "",
   });
+  const [searchedText, setSearchedText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isTableLoading, setIsTableLoading] = useState(true);
@@ -110,7 +111,7 @@ function Income() {
         console.log(error);
       })
   }
-  
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -125,12 +126,22 @@ function Income() {
       dataIndex: "date",
       width: "32%",
       key: "date",
+      sorter: (a, b) => a.date.localeCompare(b.date),
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.date).toLowerCase().includes(value.toLowerCase()) ||
+          String(record.income).toLowerCase().includes(value.toLowerCase()) ||
+          String(record.amount).toLowerCase().includes(value.toLowerCase())
+        );
+      },
     },
     {
       title: "Income",
       dataIndex: "income",
       width: "32%",
       key: "income",
+      sorter: (a, b) => a.income.localeCompare(b.income),
     },
     {
       title: "Amount",
@@ -139,7 +150,8 @@ function Income() {
       key: "amount",
       render: (value) => `₱${value.toLocaleString('en-US', {
         minimumFractionDigits: 2,
-      })}`
+      })}`,
+      sorter: (a, b) => a.amount - b.amount,
     },
     {
       title: "Actions",
@@ -174,22 +186,35 @@ function Income() {
         <Layout>
           <Navbar />
           <Content className='content'>
-            <Button type="primary" onClick={createIncome} style={{ marginBottom:'10px' }}>
-              Add Income
-            </Button>
+            <Row justify="space-between">
+              <Col span={18}>
+                <Button type="primary" onClick={createIncome} style={{ marginBottom: '10px' }}>
+                  Add Income
+                </Button>
+              </Col>
+              <Col span={6} align="end">
+                <Input.Search
+                  placeholder="Search"
+                  onSearch={(value) => {
+                    setSearchedText(value);
+                  }}
+                  onChange={(e) => {
+                    setSearchedText(e.target.value);
+                  }}
+                />
+              </Col>
+            </Row>
             <TableComponents
               loading={isTableLoading}
               columns={columns}
               dataSource={incomes}
-              className="financetable"  
-
             />
             <ModalComponents
               modalContent={
                 <IncomeModal
                   incomeFormData={incomeFormData}
                   setIncomeFormData={setIncomeFormData}
-                  modalTitle = {modalTitle}
+                  modalTitle={modalTitle}
                 />
               }
               isShownModal={isModalOpen}
@@ -198,7 +223,7 @@ function Income() {
               okText={"Submit"}
             />
           </Content>
-        <Footernav />
+          <Footernav />
         </Layout>
       </Layout>
     </div>
