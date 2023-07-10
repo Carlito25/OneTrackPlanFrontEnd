@@ -133,6 +133,36 @@
     color: white;
 }
 
+/* Dashboard Calendar */
+
+.dashboardCalendar  .ant-picker-body {
+    background-color: #FADB14;
+
+   
+}
+
+.dashboardCalendar{
+    background-color: #FADB14;
+    width: 300px !important;
+    
+}
+
+.dashboardCalendar .ant-picker-content tr > th{
+    color: 'black' !important;
+    font-weight: bold;
+}
+
+
+.dashboardCalendar .ant-picker-panel{
+    border: none !important;
+}
+
+.dashboardCalendar label {
+    color: black!important;
+}
+
+
+
 
 
 .dashboardTaskCard .ant-card-body{
@@ -156,6 +186,7 @@
 .dashboardCard{
     margin: 5px;
     margin-top: 10px;   
+    width: 33.33%;
 }
 
 .dashboardCard .ant-card-body{
@@ -171,8 +202,8 @@
 
 
 .financeNumbers{
-    padding-top: 1px; 
-    padding-bottom: 1px; 
+    margin-top: 10px;
+    margin-bottom: 25px;
     color: white;
     font-size: 30px;
 }
@@ -204,3 +235,21 @@ label{
     color: white !important;
 }
 
+.contentInnerCards{
+    margin:5px;
+}
+
+.contentInnerCards .ant-card-body{
+    padding: 0px;
+}
+
+.contentNumbers{
+    margin-top: 1px;
+    margin-bottom: 15px;
+    font-size: 30px;
+}
+
+td.ant-table-column-sort {
+    background-color: #615460 !important; 
+    color: white !important;
+}

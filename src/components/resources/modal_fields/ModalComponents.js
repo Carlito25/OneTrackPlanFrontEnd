@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'antd';
 
-const ModalComponents = ({ title, isShownModal, modalContent, handleCancel, handleOk, okText, cancelText, closable }) => {
+const ModalComponents = ({ title, isShownModal, modalContent, handleCancel, handleOk, okText, cancelText, closable, style }) => {
 
 
   return (
@@ -13,7 +13,7 @@ const ModalComponents = ({ title, isShownModal, modalContent, handleCancel, hand
     okText={okText} 
     cancelText={cancelText} 
     closable={closable}
-
+    style={style}
     >
       {modalContent}
     </Modal>

@@ -10,7 +10,7 @@ import Dashboard from './components/user/Dashboard';
 import Task from './components/user/Task';
 import CompletedTask from './components/user/CompletedTask';
 import ContentPlanner from './components/user/ContentPlanner';
-
+import ScheduledContent from './components/user/ScheduledContent';
 import Login from './components/user/Login';
 import Registration from './components/user/Registration';
 
@@ -42,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/ContentPlanner",
     element: <ContentPlanner />,
+  },
+  {
+    path: "/ScheduledContent",
+    element: <ScheduledContent />,
   },
   {
     path: "/Login",

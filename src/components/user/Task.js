@@ -26,7 +26,7 @@ function Task() {
         taskDescription: "",
         date: "",
         task_id: "",
-        isCompletedTask:false,
+        isCompletedTask: false,
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +53,7 @@ function Task() {
             taskDescription: "",
             date: "",
             task_id: "",
-            isCompletedTask:false,
+            isCompletedTask: false,
         });
         setModalTitle("Create Task");
         setIsModalOpen(true);
@@ -79,16 +79,16 @@ function Task() {
     }
 
     const completedTask = (id) => {
-              axios
-                .put(apiLink + "/" + id)
-                .then(() => {
-                  setIsModalOpen(false);
-                  fetchTask();
-                })
-          .catch((error) => {
-            console.error("Error Updating Task", error);
-          })
-      }
+        axios
+            .put(apiLink + "/" + id)
+            .then(() => {
+                setIsModalOpen(false);
+                fetchTask();
+            })
+            .catch((error) => {
+                console.error("Error Updating Task", error);
+            })
+    }
 
     const onSubmit = () => {
         axios
@@ -136,80 +136,76 @@ function Task() {
                                         type='primary'
                                         className='viewCompletedTaskButton'
                                         ghost
-                                    /*onClick={createTask}*/>
-                                        View Completed Task
-                                    </Button>
-                                </Link>
-                            </Col>
-                        </Row>
+                                    >
+                                    View Completed Task
+                                </Button>
+                            </Link>
+                        </Col>
+                    </Row>
 
-                        {tasks.map(task => (
-                            <Card
-                                key={task.id}
-                                hoverable
-                                title={
-                                    <Space>
-                                        <Text className='taskTitle'>
-                                            {task.taskInfo}
-                                        </Text>
-                                    </Space>
-                                }
-
-                                className="taskCard"
-                                loading={isCardLoading}
-                                activeTabKeys
-                                //headStyle={headStyle('#1890ff', '#fff')}
-                                actions={[
-
-                                ]}
-                            >
-                                <Row className='cardContent'>
-                                    <Col span={12}>
-                                        <Col className='taskDescription'>
-                                            <Text style={{ color:'white'}}>{task.taskDescription}</Text>
-                                        </Col>
-                                        <Col>
-                                            <Text style={{ color:'#F9F871'}}>Due Date: {task.date}</Text>
-                                        </Col>
-                                    </Col>
-                                    <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                        <Button
-                                            icon={<EditOutlined />}
-                                            className='editButton'
-                                            style={{ marginRight: '10px' }}
-                                            type='primary'
-                                            onClick={() => updateTask(task.id)}
-                                        ></Button>
-                                        <Button
-                                            icon={<CheckCircleOutlined />}
-                                            style={{ backgroundColor: 'green', }}
-                                            className='completeTaskButton'
-                                            type='primary'
-                                            onClick={() => completedTask(task.id)}
-                                        ></Button>
-                                    </Col>
-                                </Row>
-
-                            </Card>
-                        ))}
-                        <ModalComponents
-                            modalContent={
-                                <TaskModal
-                                    taskFormData={taskFormData}
-                                    setTaskFormData={setTaskFormData}
-                                    modalTitle={modalTitle}
-                                />
+                    {tasks.map(task => (
+                        <Card
+                            key={task.id}
+                            hoverable
+                            title={
+                                <Space>
+                                    <Text className='taskTitle'>
+                                        {task.taskInfo}
+                                    </Text>
+                                </Space>
                             }
-                            isShownModal={isModalOpen}
-                            handleOk={onSubmit}
-                            handleCancel={handleCancel}
-                            okText={"Submit"}
-                        />
-                    </Content>
-                    <Footernav />
-                </Layout>
+
+                            className="taskCard"
+                            loading={isCardLoading}
+                            activeTabKeys
+                        >
+                            <Row className='cardContent'>
+                                <Col span={12}>
+                                    <Col className='taskDescription'>
+                                        <Text style={{ color: 'white' }}>{task.taskDescription}</Text>
+                                    </Col>
+                                    <Col>
+                                        <Text style={{ color: '#F9F871' }}>Due Date: {task.date}</Text>
+                                    </Col>
+                                </Col>
+                                <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <Button
+                                        icon={<EditOutlined />}
+                                        className='editButton'
+                                        style={{ marginRight: '10px' }}
+                                        type='primary'
+                                        onClick={() => updateTask(task.id)}
+                                    ></Button>
+                                    <Button
+                                        icon={<CheckCircleOutlined />}
+                                        style={{ backgroundColor: 'green', }}
+                                        className='completeTaskButton'
+                                        type='primary'
+                                        onClick={() => completedTask(task.id)}
+                                    ></Button>
+                                </Col>
+                            </Row>
+
+                        </Card>
+                    ))}
+                    <ModalComponents
+                        modalContent={
+                            <TaskModal
+                                taskFormData={taskFormData}
+                                setTaskFormData={setTaskFormData}
+                                modalTitle={modalTitle}
+                            />
+                        }
+                        isShownModal={isModalOpen}
+                        handleOk={onSubmit}
+                        handleCancel={handleCancel}
+                        okText={"Submit"}
+                    />
+                </Content>
+                <Footernav />
             </Layout>
-        </div>
+        </Layout>
+        </div >
     );
 }
 
