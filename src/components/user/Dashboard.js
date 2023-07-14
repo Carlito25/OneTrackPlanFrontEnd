@@ -38,6 +38,11 @@ function Dashboard() {
     const [draftContent, setDraftContent] = useState(0);
     const [scheduledContent, setScheduledContent] = useState(0);
 
+    const [userFormData, setUserFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+    });
 
     const incomeTotalLink = 'http://localhost:8000/api/incomeMonthlyTotal/';
     const expensesMonthlyTotalLink = 'http://localhost:8000/api/expensesMonthlyTotal';
@@ -54,11 +59,19 @@ function Dashboard() {
     const scheduledContentLink = "http://localhost:8000/api/contentScheduled";
 
 
+    const userLink = "http://localhost:8000/api/user";
 
+    const fetchUser = async () => {
+        axios
+            .get(userLink)
+            .then(function (response) {
+                setUserFormData(response.data.name);
+            })
+    }
 
-    const onPanelChange = (value) => {
-        console.log(value.format('YYYY-MM-DD'));
-    };
+    // const onPanelChange = (value) => {
+    //     console.log(value.format('YYYY-MM-DD'));
+    // };
 
     const handleChange = (value) => {
         setSelectedValue(value);
@@ -70,6 +83,7 @@ function Dashboard() {
                 setLoading(false);
                 setTasks(response.data);
             })
+            
     }
 
     const fetchDraftContent = async () => {
@@ -79,6 +93,9 @@ function Dashboard() {
                 setLoading(false);
                 setDraftContent(response.data);
             })
+            .catch(function (error) {
+                console.log(error);
+              })
     }
 
     const fetchScheduledContent = async () => {
@@ -88,6 +105,9 @@ function Dashboard() {
                 setLoading(false);
                 setScheduledContent(response.data);
             })
+            .catch(function (error) {
+                console.log(error);
+              })
     }
 
 
@@ -197,7 +217,8 @@ function Dashboard() {
         fetchTask();
         fetchDraftContent();
         fetchScheduledContent();
-    }, []);
+        fetchUser();
+    }, [draftContent,scheduledContent]);
 
     useEffect(() => {
         getSavingsTotal();
@@ -211,6 +232,7 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
+                       
                         <Row>
                             <Col span={18}>
                                 <h1 className='subHeading'>Finance</h1>
@@ -332,67 +354,68 @@ function Dashboard() {
                                         </Card>
                                     </Col>
                                     <Col>
+                                    <Card
+                                    hoverable
+                                    title={
+                                        <Space>
+                                            <CalendarOutlined />
+                                            Content
+                                        </Space>
+                                    }
+                                    className="dashboardTaskCard"
+                                    activeTabKey
+                                    bodyStyle={cardColorStyle('#615460', '#fff')}
+                                    headStyle={cardColorStyle('#615460', '#fff')}
+                                    bordered={false}
+                                    style={{ width: 300 }}
+                                >
+                                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
                                         <Card
-                                            hoverable
-                                            title={
-                                                <Space>
-                                                    <CalendarOutlined />
-                                                    Content
-                                                </Space>
-                                            }
-                                            className="dashboardTaskCard"
-                                            // loading={loading}
-                                            activeTabKey
-                                            bodyStyle={cardColorStyle('#615460', '#fff')}
-                                            headStyle={cardColorStyle('#615460', '#fff')}
+                                            loading={loading}
+                                            style={{ width: 100, }}
+                                            bodyStyle={cardColorStyle('#fadb14', 'black')}
                                             bordered={false}
-                                            style={{ width: 300 }}
+                                            className="contentInnerCards"
+
                                         >
-                                            <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                                                <Card
-                                                    loading={loading}
-                                                    style={{ width: 100, }}
-                                                    bodyStyle={cardColorStyle('#fadb14', 'black')}
-                                                    bordered={false}
-                                                    className="contentInnerCards"
-
-                                                >
-                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
-                                                    <p
-                                                        style={{ display: 'flex', justifyContent: 'center' }}
-                                                        className="contentNumbers"
-                                                    >{draftContent}</p>
-                                                </Card>
-
-                                                <Card
-                                                    loading={loading}
-                                                    className="contentInnerCards"
-                                                    style={{ width: 100, }}
-                                                    bodyStyle={cardColorStyle('#1890ff', '#fff')}
-                                                    bordered={false}
-                                                >
-                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
-                                                    <p
-                                                        style={{ display: 'flex', justifyContent: 'center', }}
-                                                        className="contentNumbers"
-                                                    >{scheduledContent}</p>
-                                                </Card>
-
-                                            </Row>
-
+                                            <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
+                                            <p
+                                                style={{ display: 'flex', justifyContent: 'center' }}
+                                                className="contentNumbers"
+                                            >{draftContent}</p>
                                         </Card>
+
+                                        <Card
+                                            loading={loading}
+                                            className="contentInnerCards"
+                                            style={{ width: 100, }}
+                                            bodyStyle={cardColorStyle('#1890ff', '#fff')}
+                                            bordered={false}
+                                        >
+                                            <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
+                                            <p
+                                                style={{ display: 'flex', justifyContent: 'center', }}
+                                                className="contentNumbers"
+                                            >{scheduledContent}</p>
+                                        </Card>
+
+                                    </Row>
+
+                                </Card> 
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={6} style={{ marginTop: 0, padding: 20 }}>
-                                <div>
+                                {/* <div>
                                     <Calendar
                                         fullscreen={false}
                                         onPanelChange={onPanelChange}
                                         className="dashboardCalendar"
 
                                     />
-                                </div>
+                                </div> */}
+
+                                
                             </Col>
                         </Row>
 

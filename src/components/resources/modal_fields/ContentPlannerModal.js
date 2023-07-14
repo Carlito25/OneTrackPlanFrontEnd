@@ -125,7 +125,7 @@ function ContentPlannerModal({
                         </Col>
                     </Row>
                     <Form.Item
-                        label="Notes"
+                        label="Notes (Optional)"
                     >
                         <Input
                             placeholder="Input your notes"
