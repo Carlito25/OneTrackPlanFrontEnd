@@ -2,10 +2,28 @@ import React from 'react'
 import { Layout, theme, Avatar, Row, Col } from 'antd';
 import { FaSignOutAlt, FaCaretDown, FaUserCog } from "react-icons/fa"
 import { Dropdown, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const { Header } = Layout;
 
 const Navbar = () => {
+  const navigate = useNavigate();
 	const {token: { colorBgContainer }} = theme.useToken();
+
+  const apiLink = "http://localhost:8000/api/logout";
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(apiLink);
+      localStorage.removeItem('token');
+      console.log("Logout is clicked")
+      navigate('/login');
+      
+    } catch (error) {
+      console.log('Logout error:', error);
+    }
+  };
 
       const items = [
         {
@@ -20,6 +38,7 @@ const Navbar = () => {
           danger: true,
           icon: <FaSignOutAlt />,
           label: 'Logout',
+          onClick: handleLogout,
         },
       ];
 

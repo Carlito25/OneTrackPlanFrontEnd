@@ -109,6 +109,13 @@ function Expenses() {
             })
             .catch(function (error) {
                 console.log(error);
+                if (error.response && error.response.status === 422) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: error.response.data.message,
+                      text: 'Make sure everything is filled up!',
+                    })
+                  }
             })
     }
 

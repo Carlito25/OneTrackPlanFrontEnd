@@ -1,4 +1,6 @@
-
+body{
+    background-color: #50424F;
+}
 
 .content{
   
@@ -253,3 +255,27 @@ td.ant-table-column-sort {
     background-color: #615460 !important; 
     color: white !important;
 }
+
+/* Login */
+
+.login{
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+ }
+
+ .right-side{
+    background-image: url(../image/loginimage.jpg);
+    background-size: cover; 
+    background-position: center;
+ }
+
+ .loginCard{
+    background-color: #615460;
+    padding: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+ }
+

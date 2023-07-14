@@ -12,7 +12,7 @@ import ModalComponents from '../resources/modal_fields/ModalComponents';
 import TaskModal from '../resources/modal_fields/TaskModal';
 import { Link } from "react-router-dom";
 import Footernav from '../layout/Footer';
-
+import Swal from 'sweetalert2';
 
 
 const { Content } = Layout;
@@ -106,6 +106,13 @@ function Task() {
             })
             .catch(function (error) {
                 console.log(error);
+                if (error.response && error.response.status === 422) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: error.response.data.message,
+                      text: 'Make sure everything is filled up!',
+                    })
+                  }
             })
     }
 
