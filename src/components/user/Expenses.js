@@ -18,6 +18,7 @@ const Toast = NotifSwalAlert();
 
 function Expenses() {
     const [expensesFormData, setExpensesFormData] = useState({
+        user_id: "",
         date: "",
         expenses: "",
         amount: "",
@@ -30,10 +31,12 @@ function Expenses() {
     const [modalTitle, setModalTitle] = useState(null);
 
     const apiLink = "http://localhost:8000/api/expenses";
+    const userId = localStorage.getItem('user_id');
+    const apiUserLink = `http://localhost:8000/api/expenses/user_id/${userId}`;
 
     const fetchExpenses = async () => {
         axios
-            .get(apiLink)
+            .get(apiUserLink)
             .then(function (response) {
                 setExpenses(response.data);
                 setIsTableLoading(false);
@@ -50,6 +53,7 @@ function Expenses() {
             expenses: "",
             amount: "",
             expenses_id: "",
+            user_id: localStorage.getItem('user_id'),
         });
         setIsModalOpen(true);
         setModalTitle("Create Expenses");
@@ -65,6 +69,7 @@ function Expenses() {
                     expenses: response.data.expenses,
                     amount: response.data.amount,
                     expenses_id: response.data.id,
+                    user_id: response.data.user_id,
                 })
                 setModalTitle("Update Expenses");
                 setIsModalOpen(true);
@@ -94,8 +99,12 @@ function Expenses() {
     }
 
     const onSubmit = () => {
+        const payload = {
+            ...expensesFormData,
+            user_id: localStorage.getItem('user_id')
+          };
         axios
-            .post(apiLink, expensesFormData)
+            .post(apiLink, payload)
             .then(function (response) {
                 console.log(response);
                 Toast.fire({

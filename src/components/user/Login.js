@@ -1,30 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Checkbox, Form, Input, Row, Col } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-
+const useAuth = () => {
+  const token = localStorage.getItem('token');
+  return token !== null;
+};
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const isAuth = useAuth();
 
   const apiLink = "http://localhost:8000/api/login";
+  const apiUserLink = "http://localhost:8000/api/user";
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(apiUserLink);
+      localStorage.setItem('name', response.data.name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post(apiLink, {
         email,
         password,
       });
 
-      // Store the JWT token in local storage
-      localStorage.setItem('token', response.data.token);
 
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user_id', response.data.user_id);
+      localStorage.setItem('name', response.data.name);
       navigate('/dashboard');
+
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
@@ -33,9 +50,27 @@ const Login = () => {
           title: error.response.data.message,
           text: 'Make sure your email and password is correct!',
         })
+      } else if (error.response && error.response.status === 422) {
+        Swal.fire({
+          icon: 'error',
+          title: error.response.data.message,
+          text: 'Make sure everything is filled up!!',
+        })
       }
     }
   };
+
+
+  useEffect(() => {
+    setIsLoading(false);
+    if (isAuth) {
+      navigate('/dashboard');
+    }
+  }, [isAuth, navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -51,12 +86,12 @@ const Login = () => {
             }}
             autoComplete="off"
             className='loginCard'
-         
+
           >
             <h1
               style={{
-                color:'white',
-                marginBottom:25,
+                color: 'white',
+                marginBottom: 25,
               }}
             >Login</h1>
             <Form.Item
@@ -73,7 +108,7 @@ const Login = () => {
                 type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                
+
               />
             </Form.Item>
 
@@ -90,7 +125,7 @@ const Login = () => {
               <Input.Password
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                
+
               />
             </Form.Item>
 

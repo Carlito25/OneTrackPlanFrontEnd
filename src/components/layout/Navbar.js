@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import { Layout, theme, Avatar, Row, Col } from 'antd';
 import { FaSignOutAlt, FaCaretDown, FaUserCog } from "react-icons/fa"
 import { Dropdown, Space } from 'antd';
@@ -10,8 +10,25 @@ const { Header } = Layout;
 const Navbar = () => {
   const navigate = useNavigate();
 	const {token: { colorBgContainer }} = theme.useToken();
+  //const [name, setName] = useState('');
 
   const apiLink = "http://localhost:8000/api/logout";
+  const apiUserLink = 'http://localhost:8000/api/user';
+  const name = localStorage.getItem('name');
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await axios.get(apiUserLink);
+  //       const userName = response.data.name;
+  //       setName(userName);
+  //     } catch (error) {
+  //       console.log('Error fetching user data:', error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, [apiUserLink]);
 
   const handleLogout = async () => {
     try {
@@ -48,7 +65,7 @@ const Navbar = () => {
                 <Dropdown menu={{ items }} >
                     <a style= {{color:'white'}} onClick={(e) => e.preventDefault()}>
                         <Space  className="navbar-settings">
-                        Hazel Fabro
+                       { localStorage.getItem('name')}
                             <FaCaretDown />
                         </Space>
                     </a>

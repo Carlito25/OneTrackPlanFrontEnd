@@ -19,6 +19,7 @@ const { Content } = Layout;
 
 function ContentPlanner() {
   const [contentFormData, setContentFormData] = useState({
+    user_id: "",
     date: "",
     category: "",
     description: "",
@@ -36,10 +37,12 @@ function ContentPlanner() {
   const [modalTitle, setModalTitle] = useState();
 
   const apiLink = "http://localhost:8000/api/contentplanner";
+  const userId = localStorage.getItem('user_id');
+  const apiUserLink = `http://localhost:8000/api/contentplanner/user_id/${userId}`;
 
   const fetchContent = async () => {
     axios
-      .get(apiLink)
+      .get(apiUserLink)
       .then(function (response) {
         setContents(response.data);
         setIsTableLoading(false);
@@ -59,6 +62,7 @@ function ContentPlanner() {
       channels: "",
       notes: "",
       content_id: "",
+      user_id: localStorage.getItem('user_id'),
     });
     setModalTitle("Create Content");
     setIsModalOpen(true);
@@ -77,6 +81,7 @@ function ContentPlanner() {
           status: response.data.status,
           channels: response.data.channels,
           notes: response.data.notes,
+          user_id: response.data.user_id,
         })
         setModalTitle("Update Income");
         setIsModalOpen(true);
@@ -105,8 +110,13 @@ function ContentPlanner() {
 
 
   const onSubmit = () => {
+    const payload = {
+      ...contentFormData,
+      user_id: localStorage.getItem('user_id')
+    };
+
     axios
-      .post(apiLink, contentFormData)
+      .post(apiLink, payload)
       .then(function (response) {
         console.log(response);
         Toast.fire({

@@ -39,9 +39,12 @@ function ScheduledContent() {
 
     const apiPublishedLink = "http://localhost:8000/api/contentPublished";
 
+    const userId = localStorage.getItem('user_id');
+    const apiUserLink = `http://localhost:8000/api/contentPublished/user_id/${userId}`;
+
     const fetchScheduledContent = async () => {
         axios
-            .get(apiPublishedLink)
+            .get(apiUserLink)
             .then(function (response) {
                 setContents(response.data);
                 setIsTableLoading(false);

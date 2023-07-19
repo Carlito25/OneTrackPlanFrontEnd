@@ -21,10 +21,10 @@ import LandingPage from './components/user/LandingPage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-  // <React.StrictMode>
     <Router>
       <Routes>
         <Route path='/login' element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path='/' element={<LandingPage />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<App />} />
@@ -35,17 +35,11 @@ root.render(
           <Route path="/completedTask" element={<CompletedTask />} />
           <Route path="/contentPlanner" element={<ContentPlanner />} />
           <Route path="/scheduledContent" element={<ScheduledContent />} />
-          <Route path="/registration" element={<Registration />} />
         </Route>
       </Routes>
     </Router>,
-  // </React.StrictMode>
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
 
