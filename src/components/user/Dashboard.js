@@ -1,4 +1,4 @@
-import { Card, Select, Layout, Row, Space, Col, Calendar, theme } from "antd";
+import { Card, Select, Layout, Row, Space, Col, Calendar, theme, Skeleton } from "antd";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
 import axios from "axios";
@@ -43,20 +43,21 @@ function Dashboard() {
         email: "",
         password: "",
     });
+    const userId = localStorage.getItem('user_id');
 
-    const incomeTotalLink = 'http://localhost:8000/api/incomeMonthlyTotal/';
-    const expensesMonthlyTotalLink = 'http://localhost:8000/api/expensesMonthlyTotal';
+    const incomeTotalLink = `http://localhost:8000/api/incomeMonthlyTotal/user_id/${userId}`;
+    const expensesMonthlyTotalLink = `http://localhost:8000/api/expensesMonthlyTotal/user_id/${userId}`;
 
-    const expensesWeeklyTotalLink = 'http://localhost:8000/api/expensesWeeklyTotal';
-    const incomeWeeklyTotalLink = 'http://localhost:8000/api/incomeWeeklyTotal';
+    const expensesWeeklyTotalLink = `http://localhost:8000/api/expensesWeeklyTotal/user_id/${userId}`;
+    const incomeWeeklyTotalLink = `http://localhost:8000/api/incomeWeeklyTotal/user_id/${userId}`;
 
-    const expensesDailyTotalLink = 'http://localhost:8000/api/expensesDailyTotal';
-    const incomeDailyTotalLink = 'http://localhost:8000/api/incomeDailyTotal';
+    const expensesDailyTotalLink =`http://localhost:8000/api/expensesDailyTotal/user_id/${userId}`;
+    const incomeDailyTotalLink = `http://localhost:8000/api/incomeDailyTotal/user_id/${userId}`;
 
-    const taskLink = "http://localhost:8000/api/task";
+    const taskLink = `http://localhost:8000/api/task/user_id/${userId}`;
 
-    const draftContentLink = "http://localhost:8000/api/contentDraft";
-    const scheduledContentLink = "http://localhost:8000/api/contentScheduled";
+    const draftContentLink = `http://localhost:8000/api/contentDraft/user_id/${userId}`;
+    const scheduledContentLink = `http://localhost:8000/api/contentScheduled/user_id/${userId}`;
 
 
     const userLink = "http://localhost:8000/api/user";
@@ -83,7 +84,7 @@ function Dashboard() {
                 setLoading(false);
                 setTasks(response.data);
             })
-            
+
     }
 
     const fetchDraftContent = async () => {
@@ -95,7 +96,7 @@ function Dashboard() {
             })
             .catch(function (error) {
                 console.log(error);
-              })
+            })
     }
 
     const fetchScheduledContent = async () => {
@@ -107,7 +108,7 @@ function Dashboard() {
             })
             .catch(function (error) {
                 console.log(error);
-              })
+            })
     }
 
 
@@ -218,13 +219,15 @@ function Dashboard() {
         fetchDraftContent();
         fetchScheduledContent();
         fetchUser();
-    }, [draftContent,scheduledContent]);
+    }, [draftContent, scheduledContent]);
 
     useEffect(() => {
         getSavingsTotal();
     }, [incomeTotal, expensesTotal, selectedValue])
 
     const CustomArrowIcon = () => <CaretDownOutlined style={{ color: 'white' }} />;
+
+
     return (
         <div>
             <Layout style={{ minHeight: '100vh' }}>
@@ -232,7 +235,7 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-                       
+
                         <Row>
                             <Col span={18}>
                                 <h1 className='subHeading'>Finance</h1>
@@ -250,29 +253,28 @@ function Dashboard() {
                                     }
                                 />
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Card
-                                        hoverable
-                                        title={
-                                            <Space>
-                                                <ImportOutlined />
-                                                Your Income
-                                            </Space>
-                                        }
-                                        className="dashboardCard"
-                                        loading={loading}
-                                        activeTabKey
-                                        headStyle={cardColorStyle('#615460', 'white')}
-                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
-                                        bordered={false}
-                                    >
-                                        <p className="financeNumbers">
-                                            {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
-                                            {selectedValue === 'Monthly' && formattedIncomeTotal}
-                                            {selectedValue === 'Daily' && formattedIncomeDailyTotal}
-                                        </p>
+                                        <Card
+                                            hoverable
+                                            title={
+                                                <Space>
+                                                    <ImportOutlined />
+                                                    Your Income
+                                                </Space>
+                                            }
+                                            className="dashboardCard"
+                                            loading={loading}
+                                            activeTabKey
+                                            headStyle={cardColorStyle('#615460', 'white')}
+                                            bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                            bordered={false}
+                                        >
+                                            <p className="financeNumbers">
+                                                {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
+                                                {selectedValue === 'Monthly' && formattedIncomeTotal}
+                                                {selectedValue === 'Daily' && formattedIncomeDailyTotal}
+                                            </p>
+                                        </Card>
 
-
-                                    </Card>
                                     <Card
                                         hoverable
                                         title={
@@ -354,54 +356,56 @@ function Dashboard() {
                                         </Card>
                                     </Col>
                                     <Col>
-                                    <Card
-                                    hoverable
-                                    title={
-                                        <Space>
-                                            <CalendarOutlined />
-                                            Content
-                                        </Space>
-                                    }
-                                    className="dashboardTaskCard"
-                                    activeTabKey
-                                    bodyStyle={cardColorStyle('#615460', '#fff')}
-                                    headStyle={cardColorStyle('#615460', '#fff')}
-                                    bordered={false}
-                                    style={{ width: 300 }}
-                                >
-                                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
                                         <Card
-                                            loading={loading}
-                                            style={{ width: 100, }}
-                                            bodyStyle={cardColorStyle('#fadb14', 'black')}
+                                            hoverable
+                                            title={
+                                                <Space>
+                                                    <CalendarOutlined />
+                                                    Content
+                                                </Space>
+                                            }
+                                            className="dashboardTaskCard"
+                                            activeTabKey
+                                            bodyStyle={cardColorStyle('#615460', '#fff')}
+                                            headStyle={cardColorStyle('#615460', '#fff')}
                                             bordered={false}
-                                            className="contentInnerCards"
-
-                                        >
-                                            <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
-                                            <p
-                                                style={{ display: 'flex', justifyContent: 'center' }}
-                                                className="contentNumbers"
-                                            >{draftContent}</p>
-                                        </Card>
-
-                                        <Card
+                                            style={{ width: 300 }}
                                             loading={loading}
-                                            className="contentInnerCards"
-                                            style={{ width: 100, }}
-                                            bodyStyle={cardColorStyle('#1890ff', '#fff')}
-                                            bordered={false}
                                         >
-                                            <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
-                                            <p
-                                                style={{ display: 'flex', justifyContent: 'center', }}
-                                                className="contentNumbers"
-                                            >{scheduledContent}</p>
+                                            <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                                                
+                                                <Card
+                                                    loading={loading}
+                                                    style={{ width: 100, }}
+                                                    bodyStyle={cardColorStyle('#fadb14', 'black')}
+                                                    bordered={false}
+                                                    className="contentInnerCards"
+
+                                                >
+                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
+                                                    <p
+                                                        style={{ display: 'flex', justifyContent: 'center' }}
+                                                        className="contentNumbers"
+                                                    >{draftContent}</p>
+                                                </Card>
+
+                                                <Card
+                                                    loading={loading}
+                                                    className="contentInnerCards"
+                                                    style={{ width: 100, }}
+                                                    bodyStyle={cardColorStyle('#1890ff', '#fff')}
+                                                    bordered={false}
+                                                >
+                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
+                                                    <p
+                                                        style={{ display: 'flex', justifyContent: 'center', }}
+                                                        className="contentNumbers"
+                                                    >{scheduledContent}</p>
+                                                </Card>
+
+                                            </Row>
+
                                         </Card>
-
-                                    </Row>
-
-                                </Card> 
                                     </Col>
                                 </Row>
                             </Col>
@@ -415,7 +419,7 @@ function Dashboard() {
                                     />
                                 </div> */}
 
-                                
+
                             </Col>
                         </Row>
 

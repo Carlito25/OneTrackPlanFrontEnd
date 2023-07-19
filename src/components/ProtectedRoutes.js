@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
@@ -7,18 +7,22 @@ const useAuth = () => {
 };
 
 const ProtectedRoutes = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const isAuth = useAuth();
   const navigate = useNavigate();
 
-  if (!isAuth) {
-    navigate('/login'); 
-    return null;
+  useEffect(() => {
+    setIsLoading(false);
+    if (!isAuth) {
+      navigate('/login'); 
+    }
+  }, [isAuth, navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return <Outlet />;
 };
 
 export default ProtectedRoutes;
-
-
-

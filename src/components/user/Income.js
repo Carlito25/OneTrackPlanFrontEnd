@@ -18,6 +18,7 @@ const Toast = NotifSwalAlert();
 
 function Income() {
   const [incomeFormData, setIncomeFormData] = useState({
+    user_id: "",
     date: "",
     income: "",
     amount: "",
@@ -25,16 +26,31 @@ function Income() {
   });
   const [searchedText, setSearchedText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userID, setUserID] = useState(0);
 
   const [isTableLoading, setIsTableLoading] = useState(true);
   const [incomes, setIncomes] = useState(null);
   const [modalTitle, setModalTitle] = useState();
 
   const apiLink = "http://localhost:8000/api/income";
+  const userId = localStorage.getItem('user_id');
+  const apiUserLink = `http://localhost:8000/api/incomes/user_id/${userId}`;
+
+  
+  // const fetchUserID = async () => {
+  //   axios
+  //     .get(apiLink)
+  //     .then(function (response) {
+  //       const userID = localStorage.setItem('user_id', response.data.user_id);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     })
+  // }
 
   const fetchIncome = async () => {
     axios
-      .get(apiLink)
+      .get(apiUserLink)
       .then(function (response) {
         setIncomes(response.data);
         setIsTableLoading(false);
@@ -46,12 +62,14 @@ function Income() {
 
 
   const createIncome = () => {
+
     setIncomeFormData({
       ...incomeFormData,
       date: "",
       income: "",
       amount: "",
       income_id: "",
+      user_id: localStorage.getItem('user_id'),
     });
     setModalTitle("Create Income");
     setIsModalOpen(true);
@@ -63,6 +81,7 @@ function Income() {
       .then(function (response) {
         setIncomeFormData({
           ...incomeFormData,
+          user_id: response.data.user_id,
           income_id: response.data.id,
           date: response.data.date,
           income: response.data.income,
@@ -94,8 +113,12 @@ function Income() {
   }
 
   const onSubmit = () => {
-    axios
-      .post(apiLink, incomeFormData)
+    const payload = {
+      ...incomeFormData,
+      user_id: localStorage.getItem('user_id')
+    };
+  
+    axios.post(apiLink, payload)
       .then(function (response) {
         console.log(response);
         Toast.fire({
@@ -114,10 +137,10 @@ function Income() {
             icon: 'error',
             title: error.response.data.message,
             text: 'Make sure everything is filled up!',
-          })
+          });
         }
-      })
-  }
+      });
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);

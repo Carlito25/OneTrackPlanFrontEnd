@@ -22,6 +22,7 @@ const Toast = NotifSwalAlert();
 function Task() {
 
     const [taskFormData, setTaskFormData] = useState({
+        user_id: "",
         taskInfo: "",
         taskDescription: "",
         date: "",
@@ -35,10 +36,12 @@ function Task() {
     const [tasks, setTasks] = useState([]);
 
     const apiLink = "http://localhost:8000/api/task";
+    const userId = localStorage.getItem('user_id');
+    const apiUserLink = `http://localhost:8000/api/task/user_id/${userId}`;
 
     const fetchTask = async () => {
         try {
-            const response = await axios.get(apiLink);
+            const response = await axios.get(apiUserLink);
             setTasks(response.data);
             setIsCardLoading(false);
         } catch (error) {
@@ -54,6 +57,8 @@ function Task() {
             date: "",
             task_id: "",
             isCompletedTask: false,
+            user_id: localStorage.getItem('user_id'),
+
         });
         setModalTitle("Create Task");
         setIsModalOpen(true);
@@ -69,6 +74,7 @@ function Task() {
                     taskInfo: response.data.taskInfo,
                     taskDescription: response.data.taskDescription,
                     date: response.data.date,
+                    user_id: response.data.user_id,
                 })
                 setModalTitle("Update Task");
                 setIsModalOpen(true);
@@ -91,8 +97,12 @@ function Task() {
     }
 
     const onSubmit = () => {
+        const payload = {
+            ...taskFormData,
+            user_id: localStorage.getItem('user_id')
+          };
         axios
-            .post(apiLink, taskFormData)
+            .post(apiLink, payload)
             .then(function (response) {
                 console.log(response);
                 Toast.fire({

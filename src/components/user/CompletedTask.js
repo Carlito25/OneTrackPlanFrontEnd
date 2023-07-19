@@ -20,7 +20,8 @@ function CompletedTask() {
     const [tasksCompleted, setTasksCompleted] = useState([]);
 
     const apiLink = "http://localhost:8000/api/task";
-    const taskCompletedApiLink = "http://localhost:8000/api/taskCompleted";
+    const userId = localStorage.getItem('user_id');
+    const taskCompletedApiLink = `http://localhost:8000/api/taskCompleted/user_id/${userId}`;
 
     // const deleteCompletedTask = (id) => {
     //     axios
