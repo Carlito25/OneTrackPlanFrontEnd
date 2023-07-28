@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Form, Input, Row, Col } from 'antd';
+import { Button, Checkbox, Form, Input, Row, Col, Image, Typography } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import LandingPageNav from '../layout/LandingPageNav';
+import { Link } from 'react-router-dom';
+import { Footer } from 'antd/es/layout/layout';
+import Footernav from '../layout/Footer';
+
+
+const { Title, Text } = Typography;
 
 const useAuth = () => {
   const token = localStorage.getItem('token');
@@ -74,6 +81,7 @@ const Login = () => {
 
   return (
     <div>
+      <LandingPageNav />
       <Row>
         <Col span={12} className='login'>
           <Form
@@ -88,12 +96,14 @@ const Login = () => {
             className='loginCard'
 
           >
-            <h1
+            <Title
               style={{
                 color: 'white',
                 marginBottom: 25,
+                justifyContent: 'center',
+                 display: 'flex',
               }}
-            >Login</h1>
+            >Login</Title>
             <Form.Item
               label="Email"
               name="email"
@@ -150,11 +160,33 @@ const Login = () => {
                 Submit
               </Button>
             </Form.Item>
+
+            <Text className='text' style={{ justifyContent: 'center', display: 'flex', }}>
+              Don't have an account yet?
+            </Text>
+            <Link to={"/registration"}>
+            <a
+              style={{
+                justifyContent: 'center',
+                display: 'flex',
+                color: '#00B3B4',
+                textDecoration:'underline',
+                fontWeight:'500'
+              }}
+            > Sign Up here!
+            </a>
+            </Link>
           </Form>
         </Col>
-        <Col span={12} className='right-side'>
+        <Col className='heroSection' xs={24} sm={12} md={12} lg={12} xl={12}>
+          <Image
+            width={'90%'}
+            src={require('../../image/loginimage.png')}
+            preview={false}
+          />
         </Col>
       </Row>
+      <Footernav />
     </div>
   );
 };

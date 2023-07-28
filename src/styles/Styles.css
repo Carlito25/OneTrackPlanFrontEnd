@@ -266,11 +266,13 @@ td.ant-table-column-sort {
     height: 100vh;
  }
 
- .right-side{
-    background-image: url(../image/loginimage.jpg);
-    background-size: cover; 
-    background-position: center;
+ .loginRegisterLink{
+    display: flex; 
+    justify-content: center;
+    width: 100vh;
  }
+
+
 
  .loginCard{
     background-color: #615460;
@@ -279,3 +281,75 @@ td.ant-table-column-sort {
 
  }
 
+ /* Landing Page */
+
+ .title{
+    color: white !important;
+ }
+ .text{
+    color: white !important;
+ }
+ .heroColSection{
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 70px 0px 70px !important;
+    margin: 70px 0px 70px 0px !important;
+ }
+ .colSection{
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 70px 0px 70px !important;
+    margin: 20px 0px 20px 0px !important;
+ }
+
+ .rowSection{
+    width: 100%;
+}
+
+.rowSection2{
+    width: 100%;
+}
+
+ @media only screen and (max-width: 600px){
+    .colSection{
+        padding: 0px 20px 0px 20px !important;
+        margin: 0px 0px 0px 0px !important;
+    }
+
+    .heroColSection{
+        padding: 0px 20px 0px 20px !important;
+        margin: 20px 0px 20px 0px !important;
+        height: 100vh;
+    }
+    .rowSection{
+        flex-direction: column-reverse !important;
+        margin-top: 70px;
+    }
+    .rowSection2{
+        margin-top: 70px;
+    }
+    .heroCTA{
+        display: flex; 
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+ }
+
+ .heroCTA{
+    margin-top: 20px;
+ }
+
+ .ctaButtons{
+    margin-right: 10px;
+ }
+
+
+
+ /* Landing Page Nav */
+
+ 
