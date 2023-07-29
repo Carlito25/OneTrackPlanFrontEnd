@@ -1,4 +1,4 @@
-import { Card, Select, Layout, Row, Space, Col, Calendar, theme, Skeleton } from "antd";
+import { Card, Select, Layout, Row, Space, Col, Divider } from "antd";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
 import axios from "axios";
@@ -17,6 +17,7 @@ import Footernav from "../layout/Footer";
 
 
 const { Content } = Layout;
+
 // const { Meta } = Card;
 
 function Dashboard() {
@@ -37,12 +38,15 @@ function Dashboard() {
 
     const [draftContent, setDraftContent] = useState(0);
     const [scheduledContent, setScheduledContent] = useState(0);
+    const [percentage, setPercentage] = useState(0);
 
     const [userFormData, setUserFormData] = useState({
         name: "",
         email: "",
         password: "",
     });
+
+    const [quotes, setQuotes] = useState("");
     const userId = localStorage.getItem('user_id');
 
     const incomeTotalLink = `http://localhost:8000/api/incomeMonthlyTotal/user_id/${userId}`;
@@ -51,14 +55,13 @@ function Dashboard() {
     const expensesWeeklyTotalLink = `http://localhost:8000/api/expensesWeeklyTotal/user_id/${userId}`;
     const incomeWeeklyTotalLink = `http://localhost:8000/api/incomeWeeklyTotal/user_id/${userId}`;
 
-    const expensesDailyTotalLink =`http://localhost:8000/api/expensesDailyTotal/user_id/${userId}`;
+    const expensesDailyTotalLink = `http://localhost:8000/api/expensesDailyTotal/user_id/${userId}`;
     const incomeDailyTotalLink = `http://localhost:8000/api/incomeDailyTotal/user_id/${userId}`;
 
     const taskLink = `http://localhost:8000/api/task/user_id/${userId}`;
 
     const draftContentLink = `http://localhost:8000/api/contentDraft/user_id/${userId}`;
     const scheduledContentLink = `http://localhost:8000/api/contentScheduled/user_id/${userId}`;
-
 
     const userLink = "http://localhost:8000/api/user";
 
@@ -208,6 +211,12 @@ function Dashboard() {
         }
     }
 
+    const getPercentage = () => {
+        const savings = incomeTotal - expensesTotal
+        const percentage = (savings / incomeTotal) * 100;
+        return setPercentage(Math.floor(percentage));
+    }
+
     useEffect(() => {
         fetchIncomeTotal();
         fetchExpensesTotal();
@@ -219,14 +228,11 @@ function Dashboard() {
         fetchDraftContent();
         fetchScheduledContent();
         fetchUser();
-    }, [draftContent, scheduledContent]);
-
-    useEffect(() => {
         getSavingsTotal();
-    }, [incomeTotal, expensesTotal, selectedValue])
+        getPercentage();
+    }, [draftContent, scheduledContent, incomeTotal, expensesTotal, selectedValue]);
 
     const CustomArrowIcon = () => <CaretDownOutlined style={{ color: 'white' }} />;
-
 
     return (
         <div>
@@ -235,10 +241,29 @@ function Dashboard() {
                 <Layout>
                     <Navbar />
                     <Content className='content'>
-
                         <Row>
                             <Col span={18}>
-                                <h1 className='subHeading'>Finance</h1>
+                                <Card
+                                    hoverable
+                                    className="custom-card"
+                                    loading={loading}
+                                    activeTabKey
+                                    bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                    headStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                    bordered={false}
+                                    style={{ width: '100%', marginRight: 10 }}
+                                >
+                                    <h1 style={{ fontSize: 20 }}>Hello  { localStorage.getItem('name')}!</h1>
+
+                                    <p style={{ fontSize: 15 }}><b>Important Update:</b> Your saved <b>{percentage}%</b> of your income for the last <b>30 days</b>. Take control and boost your savings. Every bit counts and watch your wealth grow!!</p>
+                                </Card>
+                            </Col>
+                        </Row>
+
+                        <Divider style={{ border: '1px solid #615460' }} />
+
+                        <Row>
+                            <Col span={24}>
                                 <Select
                                     suffixIcon={<CustomArrowIcon />}
                                     className="financeSelect"
@@ -253,27 +278,32 @@ function Dashboard() {
                                     }
                                 />
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <Card
-                                            hoverable
-                                            title={
-                                                <Space>
-                                                    <ImportOutlined />
-                                                    Your Income
-                                                </Space>
-                                            }
-                                            className="dashboardCard"
-                                            loading={loading}
-                                            activeTabKey
-                                            headStyle={cardColorStyle('#615460', 'white')}
-                                            bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
-                                            bordered={false}
-                                        >
-                                            <p className="financeNumbers">
-                                                {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
-                                                {selectedValue === 'Monthly' && formattedIncomeTotal}
-                                                {selectedValue === 'Daily' && formattedIncomeDailyTotal}
-                                            </p>
-                                        </Card>
+                                    <Card
+                                        hoverable
+                                        title={
+                                            <Space>
+                                                <ImportOutlined />
+                                                Your Income
+                                            </Space>
+                                        }
+                                        className="dashboardCard"
+                                        loading={loading}
+                                        activeTabKey
+                                        headStyle={cardColorStyle('#615460', 'white')}
+                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        bordered={false}
+                                    >
+                                        <p className="financeNumbers">
+                                            {selectedValue === 'Weekly' && formattedIncomeWeeklyTotal}
+                                            {selectedValue === 'Monthly' && formattedIncomeTotal}
+                                            {selectedValue === 'Daily' && formattedIncomeDailyTotal}
+                                        </p>
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10, marginBottom: 10 }}>
+                                            <Link to={"/income"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
+                                                View Income Details
+                                            </Link>
+                                        </div>
+                                    </Card>
 
                                     <Card
                                         hoverable
@@ -294,7 +324,11 @@ function Dashboard() {
                                             {selectedValue === 'Monthly' && formattedExpensesTotal}
                                             {selectedValue === 'Daily' && formattedExpensesDailyTotal}
                                         </p>
-
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10, marginBottom: 10 }}>
+                                            <Link to={"/expenses"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
+                                                View Expenses Details
+                                            </Link>
+                                        </div>
                                     </Card>
 
                                     <Card
@@ -312,13 +346,15 @@ function Dashboard() {
                                         bordered={false}
                                     >
                                         <p className="financeNumbers">{formattedSavingsTotal}</p>
+
                                     </Card>
                                 </div>
 
+                                <Divider style={{ border: '1px solid #615460' }} />
 
-                                <h1 className='subHeading'>Task</h1>
+                                {/* <h1 className='subHeading'>Task</h1> */}
                                 <Row gutter={16}>
-                                    <Col>
+                                    <Col span={12}>
                                         <Card
                                             hoverable
                                             title={
@@ -333,14 +369,18 @@ function Dashboard() {
                                             bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
                                             headStyle={cardColorStyle('#CC6DCA', '#fff')}
                                             bordered={false}
-                                            style={{ width: 300 }}
+                                            style={{ width: '100%' }}
                                         >
 
                                             {tasks.length > 0 ? (
                                                 tasks.slice(0, 3).map(task => (
                                                     <p key={task.id}>
-                                                        • {task.taskInfo.split(' ').slice(0, 10).join(' ')}
-                                                        {task.taskInfo.split(' ').length > 10 ? '...' : ''}
+                                                        <b>
+                                                            • {task.taskInfo.split(' ').slice(0, 10).join(' ')}
+                                                            {task.taskInfo.split(' ').length > 10 ? '...' : ''}
+                                                        </b>
+                                                        {task.taskDescription ? ` - ${task.taskDescription.split(' ').slice(0, 20).join(' ')}` : ''}
+                                                        {task.taskDescription && task.taskDescription.split(' ').length > 10 ? '...' : ''}
                                                     </p>
                                                 ))
                                             ) : (
@@ -355,7 +395,7 @@ function Dashboard() {
                                             </div>
                                         </Card>
                                     </Col>
-                                    <Col>
+                                    <Col span={12}>
                                         <Card
                                             hoverable
                                             title={
@@ -369,11 +409,11 @@ function Dashboard() {
                                             bodyStyle={cardColorStyle('#615460', '#fff')}
                                             headStyle={cardColorStyle('#615460', '#fff')}
                                             bordered={false}
-                                            style={{ width: 300 }}
+                                            style={{ width: '100%' }}
                                             loading={loading}
                                         >
                                             <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                                                
+
                                                 <Card
                                                     loading={loading}
                                                     style={{ width: 100, }}
@@ -404,23 +444,25 @@ function Dashboard() {
                                                 </Card>
 
                                             </Row>
-
+                                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                                                <Link to={"/contentplanner"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
+                                                    View Content Planner
+                                                </Link>
+                                            </div>
                                         </Card>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col span={6} style={{ marginTop: 0, padding: 20 }}>
-                                {/* <div>
+                            {/* <Col span={6} style={{ marginTop: 0, padding: 20 }}>
+                                <div>
                                     <Calendar
                                         fullscreen={false}
                                         onPanelChange={onPanelChange}
                                         className="dashboardCalendar"
 
                                     />
-                                </div> */}
-
-
-                            </Col>
+                                </div>
+                            </Col> */}
                         </Row>
 
                     </Content>

@@ -13,6 +13,7 @@ const Registration = () => {
         name: "",
         email: "",
         password: "",
+        confirmPassword: "",
     });
     const navigate = useNavigate();
 
@@ -23,6 +24,15 @@ const Registration = () => {
 
 
     const onSubmit = () => {
+        
+        if (userFormData.password !== userFormData.confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Passwords do not match!',
+                text: 'Please make sure the passwords match.',
+            });
+            return; // Prevent form submission if passwords don't match
+        }
         axios
             .post(apiLink, userFormData)
             .then(function (response) {
@@ -39,12 +49,31 @@ const Registration = () => {
                 })
 
             }
-
             )
             .catch(function (error) {
                 console.log(error);
+                if (error.response && error.response.status === 401) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.response.data.message,
+                        text: 'Make sure your email and password is correct!',
+                    })
+                } else if (error.response && error.response.status === 422) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.response.data.message,
+                        text: 'Make sure everything is filled up!!',
+                    })
+                }
             })
     }
+
+    const onInputChange = (field, value) => {
+        setUserFormData({
+            ...userFormData,
+            [field]: value,
+        });
+    };
 
 
 
@@ -55,14 +84,16 @@ const Registration = () => {
                 <Col span={12} className='login'>
                     <Form
                         labelCol={{
-                            span: 8,
+                            span: 24,
                         }}
-                        initialValues={{
-                            remember: true,
-                        }}
+                        // initialValues={{
+                        //     remember: true,
+                        // }}
+                        layout="vertical"
                         autoComplete="off"
                         onSubmit={onSubmit}
                         className='loginCard'
+
                     >
                         <Title
                             style={{
@@ -133,6 +164,34 @@ const Registration = () => {
                                         ...userFormData,
                                         password: event.target.value,
                                     })
+                                }
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name="confirmPassword"
+                            label="Confirm Password"
+                            dependencies={['password']}
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please confirm your password!',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('The password do not match!'));
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input.Password
+                                placeholder="Enter your password"
+                                value={userFormData.confirmPassword}
+                                onChange={(event) =>
+                                    onInputChange('confirmPassword', event.target.value)
                                 }
                             />
                         </Form.Item>

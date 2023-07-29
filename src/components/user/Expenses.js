@@ -3,10 +3,10 @@ import Navbar from '../layout/Navbar';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import ExpensesModal from '../resources/modal_fields/ExpensesModal';
 import { useState, useEffect } from 'react';
-import { Layout, Space, Button, Row, Col, Input } from 'antd';
+import { Layout, Space, Button, Row, Col, Input, Select } from 'antd';
 import axios from "axios";
 import TableComponents from '../resources/TableComponents';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { EditFilled, DeleteFilled, CaretDownOutlined } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
 import NotifSwalAlert from '../resources/swal/NotifSwalAler';
@@ -30,13 +30,47 @@ function Expenses() {
     const [expenses, setExpenses] = useState(null);
     const [modalTitle, setModalTitle] = useState(null);
 
+    const [selectedValue, setSelectedValue] = useState('All Expenses');
+
     const apiLink = "http://localhost:8000/api/expenses";
     const userId = localStorage.getItem('user_id');
     const apiUserLink = `http://localhost:8000/api/expenses/user_id/${userId}`;
 
+    const apiExpensesWeekly = `http://localhost:8000/api/expensesWeekly/user_id/${userId}`;
+    const apiExpensesMonthly = `http://localhost:8000/api/expensesMonthly/user_id/${userId}`;
+
+
+    const handleChange = (value) => {
+        setSelectedValue(value);
+    };
+
     const fetchExpenses = async () => {
         axios
             .get(apiUserLink)
+            .then(function (response) {
+                setExpenses(response.data);
+                setIsTableLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+    const fetchExpensesWeekly = async () => {
+        axios
+            .get(apiExpensesWeekly)
+            .then(function (response) {
+                setExpenses(response.data);
+                setIsTableLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+    const fetchExpensesMonthly = async () => {
+        axios
+            .get(apiExpensesMonthly)
             .then(function (response) {
                 setExpenses(response.data);
                 setIsTableLoading(false);
@@ -102,7 +136,7 @@ function Expenses() {
         const payload = {
             ...expensesFormData,
             user_id: localStorage.getItem('user_id')
-          };
+        };
         axios
             .post(apiLink, payload)
             .then(function (response) {
@@ -120,11 +154,11 @@ function Expenses() {
                 console.log(error);
                 if (error.response && error.response.status === 422) {
                     Swal.fire({
-                      icon: 'error',
-                      title: error.response.data.message,
-                      text: 'Make sure everything is filled up!',
+                        icon: 'error',
+                        title: error.response.data.message,
+                        text: 'Make sure everything is filled up!',
                     })
-                  }
+                }
             })
     }
 
@@ -133,8 +167,16 @@ function Expenses() {
     };
 
     useEffect(() => {
-        fetchExpenses();
-    }, []);
+        if (selectedValue === 'Weekly') {
+            fetchExpensesWeekly();
+        }
+        else if (selectedValue === 'Monthly') {
+            fetchExpensesMonthly();
+        }
+        else if (selectedValue === 'All Expenses') {
+            fetchExpenses();
+        }
+    }, [selectedValue]);
 
     const columns = [
         {
@@ -192,7 +234,9 @@ function Expenses() {
                 </Space>
             )
         }
-    ]
+    ];
+
+    const CustomArrowIcon = () => <CaretDownOutlined style={{ color: '#00B3B4' }} />;
 
     return (
         <div>
@@ -203,9 +247,26 @@ function Expenses() {
                     <Content className='content'>
                         <Row justify="space-between">
                             <Col span={18}>
-                                <Button type="primary" onClick={createExpenses} style={{ marginBottom: '10px' }}>
+                                <Button type="primary" onClick={createExpenses} style={{ marginBottom: '15px' , marginRight: '10px' }}>
                                     Add Expenses
                                 </Button>
+
+                                <Select
+                                    type="primary"
+                                    ghost
+                                    suffixIcon={<CustomArrowIcon />}
+                                    className="financeSelectTable"
+                                    style={{ width: 160 }}
+                                    value={selectedValue}
+                                    onChange={handleChange}
+                                    options={[
+                                        { value: 'Weekly', label: 'Previous 7 days' },
+                                        { value: 'Monthly', label: 'Previous 30 days' },
+                                        { value: 'All Expenses', label: 'All Expenses' },
+                                    ]
+                                    }
+                                />
+
                             </Col>
                             <Col span={6} align="end">
                                 <Input.Search

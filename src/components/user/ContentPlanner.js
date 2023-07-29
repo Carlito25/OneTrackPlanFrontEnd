@@ -1,11 +1,11 @@
 import Sidebar from '../layout/Sidebar';
 import Navbar from '../layout/Navbar';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
-import { Layout, Button, Space, Badge, Row, Col, Input } from 'antd';
+import { Layout, Button, Space, Badge, Row, Col, Input, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import TableComponents from '../resources/TableComponents';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { EditFilled, DeleteFilled, CaretDownOutlined } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
 import NotifSwalAlert from '../resources/swal/NotifSwalAler';
@@ -36,13 +36,45 @@ function ContentPlanner() {
 
   const [modalTitle, setModalTitle] = useState();
 
+  const [selectedValue, setSelectedValue] = useState('All Content');
+
   const apiLink = "http://localhost:8000/api/contentplanner";
   const userId = localStorage.getItem('user_id');
   const apiUserLink = `http://localhost:8000/api/contentplanner/user_id/${userId}`;
 
+  const apiContentWeekly = `http://localhost:8000/api/contentplannerWeekly/user_id/${userId}`;
+  const apiContentMonthly = `http://localhost:8000/api/contentplannerMonthly/user_id/${userId}`;
+
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
   const fetchContent = async () => {
     axios
       .get(apiUserLink)
+      .then(function (response) {
+        setContents(response.data);
+        setIsTableLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+  const fetchContentWeekly = async () => {
+    axios
+      .get(apiContentWeekly)
+      .then(function (response) {
+        setContents(response.data);
+        setIsTableLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+  const fetchContentMonthly = async () => {
+    axios
+      .get(apiContentMonthly)
       .then(function (response) {
         setContents(response.data);
         setIsTableLoading(false);
@@ -142,8 +174,16 @@ function ContentPlanner() {
 
 
   useEffect(() => {
-    fetchContent();
-  }, []);
+    if (selectedValue === 'Weekly') {
+      fetchContentWeekly();
+    }
+    else if (selectedValue === 'Monthly') {
+      fetchContentMonthly();
+    }
+    else if (selectedValue === 'All Content') {
+      fetchContent();
+    }
+  }, [selectedValue]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -163,7 +203,7 @@ function ContentPlanner() {
           String(record.description).toLowerCase().includes(value.toLowerCase()) ||
           String(record.status).toLowerCase().includes(value.toLowerCase()) ||
           String(record.channels).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.notes).toLowerCase().includes(value.toLowerCase()) 
+          String(record.notes).toLowerCase().includes(value.toLowerCase())
         );
       },
     },
@@ -250,8 +290,11 @@ function ContentPlanner() {
         </Space>
       )
     },
+  ];
 
-  ]
+  const CustomArrowIcon = () => <CaretDownOutlined style={{ color: '#00B3B4' }} />;
+
+
   return (
     <div>
       <Layout style={{ minHeight: '100vh' }}>
@@ -261,12 +304,29 @@ function ContentPlanner() {
           <Content className='content'>
             <Row>
               <Col span={9}>
-                <Button type="primary" onClick={createContent} style={{ marginBottom: '10px' }}>
+                <Button type="primary" onClick={createContent} style={{ marginBottom: '15px' , marginRight: '10px' }}>
                   Add Content
                 </Button>
+
+                <Select
+                  type="primary"
+                  ghost
+                  suffixIcon={<CustomArrowIcon />}
+                  className="financeSelectTable"
+                  style={{ width: 160 }}
+                  value={selectedValue}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'Weekly', label: 'Previous 7 days' },
+                    { value: 'Monthly', label: 'Previous 30 days' },
+                    { value: 'All Content', label: 'All Content' },
+                  ]
+                  }
+                />
+
               </Col>
               <Col span={6}>
-              <Input.Search
+                <Input.Search
                   placeholder="Search"
                   onSearch={(value) => {
                     setSearchedText(value);

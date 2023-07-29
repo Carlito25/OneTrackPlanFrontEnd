@@ -3,11 +3,11 @@ import Navbar from '../layout/Navbar';
 import Footernav from '../layout/Footer';
 import ModalComponents from '../resources/modal_fields/ModalComponents';
 import IncomeModal from '../resources/modal_fields/IncomeModal';
-import { Layout, Button, Space, Row, Col, Input } from 'antd';
+import { Layout, Button, Space, Row, Col, Input, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import TableComponents from '../resources/TableComponents';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { EditFilled, DeleteFilled, CaretDownOutlined } from '@ant-design/icons';
 import { DeleteSwalConfig } from '../resources/swal/DeleteSwalConfig';
 import Swal from 'sweetalert2';
 import NotifSwalAlert from '../resources/swal/NotifSwalAler';
@@ -32,11 +32,21 @@ function Income() {
   const [incomes, setIncomes] = useState(null);
   const [modalTitle, setModalTitle] = useState();
 
+  const [selectedValue, setSelectedValue] = useState('All Incomes');
+
   const apiLink = "http://localhost:8000/api/income";
   const userId = localStorage.getItem('user_id');
   const apiUserLink = `http://localhost:8000/api/incomes/user_id/${userId}`;
 
-  
+  const apiIncomeWeekly = `http://localhost:8000/api/incomeWeekly/user_id/${userId}`;
+  const apiIncomeMonthly = `http://localhost:8000/api/incomeMonthly/user_id/${userId}`;
+
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+
   // const fetchUserID = async () => {
   //   axios
   //     .get(apiLink)
@@ -51,6 +61,30 @@ function Income() {
   const fetchIncome = async () => {
     axios
       .get(apiUserLink)
+      .then(function (response) {
+        setIncomes(response.data);
+        setIsTableLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
+  const fetchIncomeWeekly = async () => {
+    axios
+      .get(apiIncomeWeekly)
+      .then(function (response) {
+        setIncomes(response.data);
+        setIsTableLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
+  const fetchIncomeMonthly = async () => {
+    axios
+      .get(apiIncomeMonthly)
       .then(function (response) {
         setIncomes(response.data);
         setIsTableLoading(false);
@@ -117,7 +151,7 @@ function Income() {
       ...incomeFormData,
       user_id: localStorage.getItem('user_id')
     };
-  
+
     axios.post(apiLink, payload)
       .then(function (response) {
         console.log(response);
@@ -147,8 +181,16 @@ function Income() {
   };
 
   useEffect(() => {
-    fetchIncome();
-  }, []);
+    if (selectedValue === 'Weekly') {
+      fetchIncomeWeekly();
+    } 
+    else if (selectedValue === 'Monthly') {
+      fetchIncomeMonthly();
+    } 
+    else if (selectedValue === 'All Incomes') {
+      fetchIncome();
+    }
+  }, [selectedValue]);
 
   const columns = [
     {
@@ -208,6 +250,8 @@ function Income() {
     }
   ]
 
+  const CustomArrowIcon = () => <CaretDownOutlined style={{ color: '#00B3B4' }} />;
+
 
   return (
     <div>
@@ -218,10 +262,26 @@ function Income() {
           <Content className='content'>
             <Row justify="space-between">
               <Col span={18}>
-                <Button type="primary" onClick={createIncome} style={{ marginBottom: '10px' }}>
+                <Button type="primary" onClick={createIncome} style={{ marginBottom: '15px', marginRight: '10px' }}>
                   Add Income
                 </Button>
+                <Select
+                  type="primary"
+                  ghost
+                  suffixIcon={<CustomArrowIcon />}
+                  className="financeSelectTable"
+                  style={{ width: 160 }}
+                  value={selectedValue}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'Weekly', label: 'Previous 7 days' },
+                    { value: 'Monthly', label: 'Previous 30 days' },
+                    { value: 'All Incomes', label: 'All Incomes' },
+                  ]
+                  }
+                />
               </Col>
+
               <Col span={6} align="end">
                 <Input.Search
                   placeholder="Search"
