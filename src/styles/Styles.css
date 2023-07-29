@@ -126,9 +126,12 @@ body{
 
 /* Dashboard */
 
+
+
 .welcomeHeading{
     font-size: x-large;
     color: white;
+    
 }
 
 .subHeading{
@@ -163,7 +166,13 @@ body{
     color: black!important;
 }
 
+  .custom-card .ant-card-body {
+    border-radius: 8px 8px 8px 8px;
+  }
 
+  .custom-card{
+    background-color: #615460 !important;
+  }
 
 
 
@@ -189,11 +198,13 @@ body{
     margin: 5px;
     margin-top: 10px;   
     width: 33.33%;
+    background-color: #615460 !important;
 }
 
 .dashboardCard .ant-card-body{
     padding-top: 0px; 
     padding-bottom: 0px; 
+    
 }
 
 .dashboardCard .ant-card-head{
@@ -264,6 +275,7 @@ td.ant-table-column-sort {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    
  }
 
  .loginRegisterLink{
@@ -271,15 +283,18 @@ td.ant-table-column-sort {
     justify-content: center;
     width: 100vh;
  }
-
-
+ ::-ms-reveal {
+    display: none
+  }
 
  .loginCard{
     background-color: #615460;
-    padding: 50px;
+    padding: 0px 80px 20px 80px;
+    margin-top: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
  }
+
 
  /* Landing Page */
 
@@ -348,8 +363,14 @@ td.ant-table-column-sort {
     margin-right: 10px;
  }
 
+ /* Finance Range Selection Table */
 
+ .financeSelectTable .ant-select-selector{
+    background-color: #00b4b400 !important;
+    color: #00B3B4;
+    border: solid !important;
+    border-color: #00B3B4 !important;
+}
 
- /* Landing Page Nav */
 
  

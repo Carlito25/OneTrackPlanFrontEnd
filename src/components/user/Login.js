@@ -89,9 +89,9 @@ const Login = () => {
             labelCol={{
               span: 8,
             }}
-            initialValues={{
-              remember: true,
-            }}
+            // initialValues={{
+            //   remember: true,
+            // }}
             autoComplete="off"
             className='loginCard'
 
