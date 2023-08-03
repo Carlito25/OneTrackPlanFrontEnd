@@ -46,7 +46,7 @@ function Dashboard() {
         password: "",
     });
 
-    const [quotes, setQuotes] = useState("");
+    const [usersName, setUsersName] = useState("");
     const userId = localStorage.getItem('user_id');
 
     const incomeTotalLink = `http://localhost:8000/api/incomeMonthlyTotal/user_id/${userId}`;
@@ -65,11 +65,11 @@ function Dashboard() {
 
     const userLink = "http://localhost:8000/api/user";
 
-    const fetchUser = async () => {
+    const fetchUser = async (id) => {
         axios
-            .get(userLink)
+            .get(userLink + "/" + id)
             .then(function (response) {
-                setUserFormData(response.data.name);
+                setUsersName(response.data.name);
             })
     }
 
@@ -227,10 +227,10 @@ function Dashboard() {
         fetchTask();
         fetchDraftContent();
         fetchScheduledContent();
-        fetchUser();
+        fetchUser(localStorage.getItem('user_id'));
         getSavingsTotal();
         getPercentage();
-    }, [draftContent, scheduledContent, incomeTotal, expensesTotal, selectedValue]);
+    }, [draftContent, scheduledContent, incomeTotal, expensesTotal, selectedValue, usersName]);
 
     const CustomArrowIcon = () => <CaretDownOutlined style={{ color: 'white' }} />;
 
@@ -253,7 +253,7 @@ function Dashboard() {
                                     bordered={false}
                                     style={{ width: '100%', marginRight: 10 }}
                                 >
-                                    <h1 style={{ fontSize: 20 }}>Hello  { localStorage.getItem('name')}!</h1>
+                                    <h1 style={{ fontSize: 20 }}>Hello  { usersName}!</h1>
 
                                     <p style={{ fontSize: 15 }}><b>Important Update:</b> Your saved <b>{percentage}%</b> of your income for the last <b>30 days</b>. Take control and boost your savings. Every bit counts and watch your wealth grow!!</p>
                                 </Card>

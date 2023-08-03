@@ -110,7 +110,7 @@ const Registration = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Please input your Name!',
                                 },
                             ]}
                         >
@@ -131,7 +131,7 @@ const Registration = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Please input your Email!',
                                 },
                             ]}
                         >
