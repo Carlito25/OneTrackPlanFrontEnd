@@ -353,7 +353,7 @@ function ContentPlanner() {
               loading={isTableLoading}
               columns={columns}
               dataSource={contents}
-              className="table"
+              className="primary"
             />
             <ModalComponents
               modalContent={

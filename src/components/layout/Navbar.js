@@ -134,7 +134,7 @@ const Navbar = () => {
   ];
 
   return (
-    <Header style={{ background: "#50424F", color: 'white' }}>
+    <Header style={{ background: "#2C2F48", color: 'white' }}>
       <Row justify="end" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Dropdown menu={{ items }} >
           <a style={{ color: 'white' }} onClick={(e) => e.preventDefault()}>

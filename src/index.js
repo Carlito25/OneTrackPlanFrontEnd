@@ -15,7 +15,7 @@ import Login from './components/user/Login';
 import Registration from './components/user/Registration';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import LandingPage from './components/user/LandingPage';
-
+import Configuration from './components/user/Configuration';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -35,6 +35,7 @@ root.render(
           <Route path="/completedTask" element={<CompletedTask />} />
           <Route path="/contentPlanner" element={<ContentPlanner />} />
           <Route path="/scheduledContent" element={<ScheduledContent />} />
+          <Route path="/configuration" element={<Configuration />} />
         </Route>
       </Routes>
     </Router>,

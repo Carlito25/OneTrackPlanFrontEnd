@@ -21,6 +21,7 @@ const { Content } = Layout;
 // const { Meta } = Card;
 
 function Dashboard() {
+
     const [loading, setLoading] = useState(true);
     const [incomeTotal, setincomeTotal] = useState(0);
     const [expensesTotal, setExpensesTotal] = useState(0);
@@ -64,6 +65,20 @@ function Dashboard() {
     const scheduledContentLink = `http://localhost:8000/api/contentScheduled/user_id/${userId}`;
 
     const userLink = "http://localhost:8000/api/user";
+
+    const contentCards = [
+        { label: 'Draft', value: draftContent },
+        { label: 'Scheduled', value: scheduledContent },
+        { label: 'In Progress', value: 0 },
+        { label: 'For Review', value: 0 },
+        { label: 'For Revision', value: 0 },
+        { label: 'Cancelled', value: 0 },
+    ];
+
+    const chunkArray = (arr, size) =>
+        Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+            arr.slice(i * size, i * size + size)
+        );
 
     const fetchUser = async (id) => {
         axios
@@ -245,22 +260,25 @@ function Dashboard() {
                             <Col span={18}>
                                 <Card
                                     hoverable
-                                    className="custom-card"
+                                    className="custom-card DashboardWelcomeCard"
                                     loading={loading}
                                     activeTabKey
-                                    bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
-                                    headStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                    bodyStyle={cardColorStyle('#f9f871', '#1d1f3d')}
+                                    headStyle={cardColorStyle('#f9f871', '#1d1f3d')}
                                     bordered={false}
                                     style={{ width: '100%', marginRight: 10 }}
                                 >
                                     <h1 style={{ fontSize: 20 }}>Hello  { usersName}!</h1>
-
+                                    {savingsTotal == 0 ? (
+                                    <p style={{ fontSize: 15 }}>👋 <b>Friendly Reminder:</b> Add your income and expenses to start tracking your savings progress!</p>
+                                    ) : (
                                     <p style={{ fontSize: 15 }}><b>Important Update:</b> Your saved <b>{percentage}%</b> of your income for the last <b>30 days</b>. Take control and boost your savings. Every bit counts and watch your wealth grow!!</p>
+                                    )}
                                 </Card>
                             </Col>
                         </Row>
 
-                        <Divider style={{ border: '1px solid #615460' }} />
+                        <Divider className="dashboardDivider" />
 
                         <Row>
                             <Col span={24}>
@@ -289,8 +307,8 @@ function Dashboard() {
                                         className="dashboardCard"
                                         loading={loading}
                                         activeTabKey
-                                        headStyle={cardColorStyle('#615460', 'white')}
-                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        headStyle={cardColorStyle('#393D5E', 'white')}
+                                        bodyStyle={cardColorStyle('#393D5E', '#1C1C2A')}
                                         bordered={false}
                                     >
                                         <p className="financeNumbers">
@@ -315,8 +333,8 @@ function Dashboard() {
                                         }
                                         className="dashboardCard"
                                         loading={loading}
-                                        headStyle={cardColorStyle('#615460', 'white')}
-                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        headStyle={cardColorStyle('#393D5E', 'white')}
+                                        bodyStyle={cardColorStyle('#393D5E', '#1C1C2A')}
                                         bordered={false}
                                     >
                                         <p className="financeNumbers">
@@ -341,8 +359,8 @@ function Dashboard() {
                                         }
                                         className="dashboardCard"
                                         loading={loading}
-                                        headStyle={cardColorStyle('#615460', 'white')}
-                                        bodyStyle={cardColorStyle('#615460', '#1C1C2A')}
+                                        headStyle={cardColorStyle('#393D5E', 'white')}
+                                        bodyStyle={cardColorStyle('#393D5E', '#1C1C2A')}
                                         bordered={false}
                                     >
                                         <p className="financeNumbers">{formattedSavingsTotal}</p>
@@ -350,7 +368,7 @@ function Dashboard() {
                                     </Card>
                                 </div>
 
-                                <Divider style={{ border: '1px solid #615460' }} />
+                                <Divider className="dashboardDivider" />
 
                                 {/* <h1 className='subHeading'>Task</h1> */}
                                 <Row gutter={16}>
@@ -366,8 +384,8 @@ function Dashboard() {
                                             className="dashboardTaskCard"
                                             loading={loading}
                                             activeTabKey
-                                            bodyStyle={cardColorStyle('#CC6DCA', '#fff')}
-                                            headStyle={cardColorStyle('#CC6DCA', '#fff')}
+                                            bodyStyle={cardColorStyle('#198785', '#fff')}
+                                            headStyle={cardColorStyle('#198785', '#fff')}
                                             bordered={false}
                                             style={{ width: '100%' }}
                                         >
@@ -406,44 +424,30 @@ function Dashboard() {
                                             }
                                             className="dashboardTaskCard"
                                             activeTabKey
-                                            bodyStyle={cardColorStyle('#615460', '#fff')}
-                                            headStyle={cardColorStyle('#615460', '#fff')}
+                                            bodyStyle={cardColorStyle('#393D5E', '#fff')}
+                                            headStyle={cardColorStyle('#393D5E', '#fff')}
                                             bordered={false}
-                                            style={{ width: '100%' }}
+                                            style={{ width: '100%'}}
                                             loading={loading}
                                         >
-                                            <Row style={{ display: 'flex', justifyContent: 'center' }}>
-
-                                                <Card
-                                                    loading={loading}
-                                                    style={{ width: 100, }}
-                                                    bodyStyle={cardColorStyle('#fadb14', 'black')}
-                                                    bordered={false}
-                                                    className="contentInnerCards"
-
-                                                >
-                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Draft </h1>
-                                                    <p
-                                                        style={{ display: 'flex', justifyContent: 'center' }}
-                                                        className="contentNumbers"
-                                                    >{draftContent}</p>
-                                                </Card>
-
-                                                <Card
-                                                    loading={loading}
-                                                    className="contentInnerCards"
-                                                    style={{ width: 100, }}
-                                                    bodyStyle={cardColorStyle('#1890ff', '#fff')}
-                                                    bordered={false}
-                                                >
-                                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}> Scheduled </h1>
-                                                    <p
-                                                        style={{ display: 'flex', justifyContent: 'center', }}
-                                                        className="contentNumbers"
-                                                    >{scheduledContent}</p>
-                                                </Card>
-
-                                            </Row>
+                                            {chunkArray(contentCards, 3).map((row, rowIndex) => (
+                                                <Row key={rowIndex} style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+                                                    {row.map((item) => (
+                                                        <Card
+                                                            key={item.label}
+                                                            loading={loading}
+                                                            className="contentInnerCards"
+                                                            style={{ width: '31%' }}
+                                                            bordered={false}
+                                                        >
+                                                            <h1 style={{ display: 'flex', justifyContent: 'center' }}>{item.label}</h1>
+                                                            <p style={{ display: 'flex', justifyContent: 'center' }} className="contentNumbers">
+                                                                {item.value}
+                                                            </p>
+                                                        </Card>
+                                                    ))}
+                                                </Row>
+                                            ))}
                                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
                                                 <Link to={"/contentplanner"} style={{ textAlign: 'center', color: 'white', textDecoration: 'underline' }}>
                                                     View Content Planner

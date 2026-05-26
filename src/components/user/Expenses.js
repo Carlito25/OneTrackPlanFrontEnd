@@ -284,7 +284,7 @@ function Expenses() {
                             loading={isTableLoading}
                             columns={columns}
                             dataSource={expenses}
-                            className="financetable"
+                            className="primary"
                         />
                         <ModalComponents
                             modalContent={

@@ -1,10 +1,10 @@
 body{
-    background-color: #50424F;
+    background-color: #1D203E;
 }
 
 .content{
   
-    background-color: #50424F;
+    background-color: #1D203E;
     
     padding: 10px 20px 20px 20px;
 }
@@ -17,22 +17,33 @@ body{
      background-color: #217c72 !important; 
 }
 
+h1{
+    color:white;
+}
 
-.ant-table{
-    background-color: #50424F !important; 
-} 
 
-  .ant-table tbody > tr > td {
+.ant-table-wrapper.primary .ant-table {
+    background-color: #393D5E !important; 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid transparent !important;
+    background-image: 
+        linear-gradient(#393D5E, #393D5E), 
+        linear-gradient(135deg, #00B3B4, #FF69B4) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+}
+
+  .ant-table-wrapper tbody > tr > td {
     color: white;
   }  
 
-  .ant-table tbody > tr:hover > td {
-    background-color: #615460 !important; 
+  .ant-table-wrapper tbody > tr:hover > td {
+    background-color: #393D5E !important; 
     color: white !important;
   }
 
   .ant-table-thead > tr > th {
-    background-color: #615460 !important; 
+    background-color: #393D5E !important; 
     color: white !important;
   }  
 
@@ -63,9 +74,18 @@ body{
     background-color: #02485a !important; 
 }
 
+.add-config{
+    background-color: #73d13d !important; 
+}
+
+.add-config:hover{
+    background-color: #0688a8 !important; 
+}
+
 /*Side bar Menu*/
 .sidebar-menu{
     font-size: 18px;
+    color: white !important;
 }
 
 .sidenav-menu-icons{
@@ -79,7 +99,7 @@ body{
     width: 100%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin: 10px 0px 20px 0px;
-    background-color: #615460 !important; 
+    background-color: #393D5E !important; 
     border: none;
 }
 
@@ -182,8 +202,41 @@ body{
     
 }
 
+.contentInnerCards {
+    background: rgba(255, 255, 255, 0.144) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    color: white;
+}
+
+.dashboardTaskCard{
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+    border: 1px solid transparent !important;
+    background-image: 
+        linear-gradient(#393D5E, #393D5E), 
+        linear-gradient(135deg, #00B3B4, #FF69B4) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+}
+
+.dashboardDivider{
+    border: none !important;
+    border: 1px solid transparent !important;
+    background-image: 
+        linear-gradient(#393D5E, #393D5E), 
+        linear-gradient(135deg, #00B3B4, #FF69B4) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+}
+
+.DashboardWelcomeCard{
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+
 .financeSelect .ant-select-selector{
-    background-color: #00B3B4 !important;
+    background-color: #198785 !important;
     color: white;
     border: none !important;
 }
@@ -198,7 +251,15 @@ body{
     margin: 5px;
     margin-top: 10px;   
     width: 33.33%;
-    background-color: #615460 !important;
+    background-color: #393D5E !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+    border: 1px solid transparent !important;
+    background-image: 
+        linear-gradient(#393D5E, #393D5E), 
+        linear-gradient(135deg, #00B3B4, #FF69B4) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
 }
 
 .dashboardCard .ant-card-body{
@@ -224,8 +285,16 @@ body{
 /* Modal */
 
 div.ant-modal-content {
-    background-color: #50424F !important;
+    background-color: #1D203E !important;
     color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+    border: 1px solid transparent !important;
+    background-image: 
+        linear-gradient(#393D5E, #393D5E), 
+        linear-gradient(135deg, #00B3B4, #FF69B4) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
 }
 
 label{
@@ -239,12 +308,15 @@ label{
 /* SideBar */
 
 .ant-menu-item:hover{
-    background-color: #CC6DCA !important;
+    background-color: #198785 !important;
+    color: white !important;
+}
+.ant-menu-item{
     color: white !important;
 }
 
 .ant-menu-item-selected{
-    background-color: #CC6DCA !important;
+    background-color: #198785 !important;
     color: white !important;
 }
 
@@ -260,6 +332,14 @@ label{
     margin-top: 1px;
     margin-bottom: 15px;
     font-size: 30px;
+}
+
+.ant-table {
+    background-color: #393D5E !important;
+}
+
+.ant-table-wrapper .ant-table {
+    background-color: #393D5E !important;
 }
 
 td.ant-table-column-sort {

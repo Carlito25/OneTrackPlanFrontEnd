@@ -7,6 +7,7 @@ import {
   CalendarOutlined,
   FieldTimeOutlined,
   DashboardOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 
 import { useState } from 'react';
@@ -51,6 +52,12 @@ const menuItems = [
     icon: <FieldTimeOutlined className="sidenav-menu-icons" style={{ fontSize: '20px' }} />,
     path: '/time-management',
   },
+    {
+    key: 'configuration',
+    label: 'Configuration',
+    icon: <SettingOutlined className="sidenav-menu-icons" style={{ fontSize: '20px' }} />,
+    path: '/configuration',
+  },
 ];
 
 function Sidebar() {
@@ -65,7 +72,7 @@ function Sidebar() {
   }, [location]);
 
   return (
-    <Sider style={{ background: '#615460' }} breakpoint="lg" collapsedWidth="0" width="250">
+    <Sider style={{ background: '#5a517a' }} breakpoint="lg" collapsedWidth="0" width="250">
       <div style={{ paddingBottom: '30px', paddingTop: '30px' }}>
         <Row justify="space-around" align="middle">
           <Image width="50%" src={Logo} preview={false} />
@@ -73,7 +80,7 @@ function Sidebar() {
       </div>
       <Menu
         mode="inline"
-        style={{ background: '#615460', color: 'white', height: '50%' }}
+        style={{ background: '#5a517a', color: 'white', height: '50%' }}
         className="sidebar-menu"
         onClick={({ key }) => setSelectedKey(key)}
         selectedKeys={[selectedKey]}

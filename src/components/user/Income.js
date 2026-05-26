@@ -298,6 +298,7 @@ function Income() {
               loading={isTableLoading}
               columns={columns}
               dataSource={incomes}
+              className="primary"
             />
             <ModalComponents
               modalContent={

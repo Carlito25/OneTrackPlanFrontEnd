@@ -4,7 +4,7 @@ const {  Footer, } = Layout;
 
 const Footernav = () => {
   return (
-    <Footer className='footer-nav' style={{ background: "#50424F", color:'white', textAlign:'center' }}>
+    <Footer className='footer-nav' style={{ background: "#2C2F48", color:'white', textAlign:'center' }}>
     One Track Plan ©2023
 </Footer>
   )
